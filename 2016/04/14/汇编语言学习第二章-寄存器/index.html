@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="本博文系列参考自&amp;lt;&amp;lt;汇编语言&amp;gt;&amp;gt;第三版，作者:王爽&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;在CPU中，有四种主要的部件。运算器，控制器，寄存器，内部总线。这里的内部总线用于CPU内部进行各种信息的传递，与第一章所讲的控制总线，数据总线，地址总线不同，第一章所描述的总线属于外部总线，作为CPU与外部期间进行信息传递的通路。运算器用于各种信息的处理，寄存器用于信息的处理">
+<meta name="keywords" content="汇编语言学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编语言学习第二章-寄存器">
+<meta property="og:url" content="http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="本博文系列参考自&amp;lt;&amp;lt;汇编语言&amp;gt;&amp;gt;第三版，作者:王爽&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;在CPU中，有四种主要的部件。运算器，控制器，寄存器，内部总线。这里的内部总线用于CPU内部进行各种信息的传递，与第一章所讲的控制总线，数据总线，地址总线不同，第一章所描述的总线属于外部总线，作为CPU与外部期间进行信息传递的通路。运算器用于各种信息的处理，寄存器用于信息的处理">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/1.png">
+<meta property="og:image" content="http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/2.png">
+<meta property="og:image" content="http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/3.png">
+<meta property="og:image" content="http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/4.png">
+<meta property="og:image" content="http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/5.png">
+<meta property="og:image" content="http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/6.png">
+<meta property="og:updated_time" content="2018-09-17T17:19:37.007Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="汇编语言学习第二章-寄存器">
+<meta name="twitter:description" content="本博文系列参考自&amp;lt;&amp;lt;汇编语言&amp;gt;&amp;gt;第三版，作者:王爽&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;在CPU中，有四种主要的部件。运算器，控制器，寄存器，内部总线。这里的内部总线用于CPU内部进行各种信息的传递，与第一章所讲的控制总线，数据总线，地址总线不同，第一章所描述的总线属于外部总线，作为CPU与外部期间进行信息传递的通路。运算器用于各种信息的处理，寄存器用于信息的处理">
+<meta name="twitter:image" content="http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>汇编语言学习第二章-寄存器</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2016/04/13/汇编语言学习第一章-基础知识/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&text=汇编语言学习第二章-寄存器"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&title=汇编语言学习第二章-寄存器"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&is_video=false&description=汇编语言学习第二章-寄存器"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=汇编语言学习第二章-寄存器&body=Check out this article: http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&title=汇编语言学习第二章-寄存器"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&title=汇编语言学习第二章-寄存器"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&title=汇编语言学习第二章-寄存器"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&title=汇编语言学习第二章-寄存器"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&name=汇编语言学习第二章-寄存器&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#本博文系列参考自-lt-lt-汇编语言-gt-gt-第三版，作者-王爽"><span class="toc-number">1.</span> <span class="toc-text">本博文系列参考自&lt;&lt;汇编语言&gt;&gt;第三版，作者:王爽</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-通用寄存器和字在寄存器中的存储"><span class="toc-number"></span> <span class="toc-text">2.1 通用寄存器和字在寄存器中的存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-一些汇编指令和物理地址"><span class="toc-number"></span> <span class="toc-text">2.2 一些汇编指令和物理地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-16位机和8086进行寻址的方法"><span class="toc-number"></span> <span class="toc-text">2.3 16位机和8086进行寻址的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-段的概念和段寄存器"><span class="toc-number"></span> <span class="toc-text">2.4 段的概念和段寄存器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-CS和IP"><span class="toc-number"></span> <span class="toc-text">2.5 CS和IP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-修改CS和IP，代码段的介绍"><span class="toc-number"></span> <span class="toc-text">2.6 修改CS和IP，代码段的介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本章完结"><span class="toc-number"></span> <span class="toc-text">本章完结</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        汇编语言学习第二章-寄存器
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2016-04-14T01:56:50.000Z" itemprop="datePublished">2016-04-14</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/汇编语言学习/">汇编语言学习</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h5 id="本博文系列参考自-lt-lt-汇编语言-gt-gt-第三版，作者-王爽"><a href="#本博文系列参考自-lt-lt-汇编语言-gt-gt-第三版，作者-王爽" class="headerlink" title="本博文系列参考自&lt;&lt;汇编语言&gt;&gt;第三版，作者:王爽"></a>本博文系列参考自&lt;&lt;汇编语言&gt;&gt;第三版，作者:王爽</h5><p>&ensp;&ensp;&ensp;&ensp;在CPU中，有四种主要的部件。运算器，控制器，寄存器，内部总线。这里的内部总线用于CPU内部进行各种信息的传递，与第一章所讲的控制总线，数据总线，地址总线不同，第一章所描述的总线属于外部总线，作为CPU与外部期间进行信息传递的通路。运算器用于各种信息的处理，寄存器用于信息的处理，控制器用于控制信息的处理。对于利用汇编编程来说，寄存器是主要操作的部件，不同的CPU中寄存器的个数和种类是不同的，8086CPU寄存器个数为14个AX,BX,CX,DX,CS,SS,DS,ES,SI,DI,SP,BP,IP,PSW。</p>
+<h2 id="2-1-通用寄存器和字在寄存器中的存储"><a href="#2-1-通用寄存器和字在寄存器中的存储" class="headerlink" title="2.1 通用寄存器和字在寄存器中的存储"></a>2.1 通用寄存器和字在寄存器中的存储</h2><p>&ensp;&ensp;&ensp;&ensp;8086CPU所有的寄存器均为16位，其中AX,BX,CX,DX这四个寄存器一般作为通用的寄存器使用，用于存储一般的数据。16位寄存器能存储的最大值为2^16=65536，在8086CPU寄存器之前有很多8位的寄存器的CPU，为了和以前在8位寄存器下写的程序相兼容，8086CPU将16位寄存器可分为高八位和低八位的寄存器使用。</p>
+<p>&ensp;&ensp;&ensp;&ensp;以AX寄存器为例，其逻辑结构如下图所示，从做到右依次为高位到低位。<br><img src="/2016/04/14/汇编语言学习第二章-寄存器/1.png" alt="汇编语言学习第二章-寄存器"><br>&ensp;&ensp;&ensp;&ensp;比如我们存储一个数据2000H(后缀H,hex代表16进制)，其二进制位10000000000000B(B,binary代表二进制),我们将该数据存入AX中为:</p>
+<pre><code>0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0</code></pre> 
+
+<p>&ensp;&ensp;&ensp;&ensp;当我们将AX分为两个8位寄存器的时候为:AH(AX High 8-BIT),AL(AX Low-BIT)。<br>&ensp;&ensp;&ensp;&ensp;类似的BX,CX,DX分成8位寄存器为:BH和BL，CH和CL，DH和DL<br>&ensp;&ensp;&ensp;&ensp;一个字节代表8位二进制位，一个字代表两个字节即16位二进制位。当存储一个字节的时候可以将其存储在寄存器的高8位或者低8位，当存储一个字的时候需要将该字的高字节存储在寄存器的高8位，将该字的低字节存储在寄存器的低8位。</p>
+<h2 id="2-2-一些汇编指令和物理地址"><a href="#2-2-一些汇编指令和物理地址" class="headerlink" title="2.2 一些汇编指令和物理地址"></a>2.2 一些汇编指令和物理地址</h2><ol>
+<li>mov ax,12h与MOV AX,12H是一样的效果，汇编指令不区分大小写</li>
+<li><p>若ax和bx当前存储的值都是8226H，当执行add ax,bx的时候其结果应该为1044CH，但是存储结果的寄存器ax为16位而1044CH位20位，所以进位的1不能存储(当可以影响进位标识寄存器)，相加后的ax存储的值为044CH</p>
+</li>
+<li><p>指令add al,93h,执行器al中的数据为C5H，相加之后为158H。但是你会以为在al中存储58H，同时将最高位的1存储在ah中，那么这样理解你就错了，因为当汇编指令使用8位寄存器的时候，是作为独立的寄存器使用与其高位寄存器是无关的。所以ax中的值为0058h.</p>
+</li>
+<li>在进行运算和数据传送的时候。寄存器的位数必须一致，不能出现mov ax,bl或者add bh,ax之类的指令。</li>
+<li>在第一章已经介绍过，计算机内的所有存储区都是通过进行统一进行编制的，其寻址是通过地址总线进行寻址，每个存储区单元都有唯一的地址进行寻址，这个地址我们称为物理地址。</li>
+</ol>
+<h2 id="2-3-16位机和8086进行寻址的方法"><a href="#2-3-16位机和8086进行寻址的方法" class="headerlink" title="2.3 16位机和8086进行寻址的方法"></a>2.3 16位机和8086进行寻址的方法</h2><p>&ensp;&ensp;&ensp;&ensp;16位机代表CPU内部进行运算和寄存的位数为16位，即CPU内部的运算器一次性能进行16位数据的运算，CPU内部的寄存器最大能存储16位数据单元。8086CPU有20条地址总线进行寻址，那么问题来了，CPU在进行寻址的时候地址信息会先存储在CPU内部，但是8086CPU内部最大可以存储16位地址信息，那么怎么来对20位地址进行存储呢。</p>
+<p>&ensp;&ensp;&ensp;&ensp;其解决办法是在内部通过一个加法器将两个16位地址合成20位地址来进行存储区寻址。其示意图如下:<br><img src="/2016/04/14/汇编语言学习第二章-寄存器/2.png" alt="汇编语言学习第二章-寄存器"><br>&ensp;&ensp;&ensp;&ensp;8086CPU内部的寄存器提供两个16位的地址，通过地址加法器合成一个20位的地址，进而通过输入输出电路将20位地址经由地址总线传送到外部存储区进行寻址。<br>&ensp;&ensp;&ensp;&ensp;两个16位地址通过地址加法器合成20位地址的示意图如下：<br><img src="/2016/04/14/汇编语言学习第二章-寄存器/3.png" alt="汇编语言学习第二章-寄存器"><br>&ensp;&ensp;&ensp;&ensp;地址加法器计算公式:<font color="#0099ff">20位物理地址=16位段地址<em>16+16位偏移地址</em></font>。这里简单解释一下，对于二进制数据来讲当进行移位操作的时候，左移动一位相当于2, 地址1230H*16即向左移位4位，变为12300H。这时候再加上偏移地址00C8H，结果为123C8H，该地址即为我们合成后的20位物理地址。<br>&ensp;&ensp;&ensp;&ensp;举个例子来说明这一问题,学校，体育馆，图书馆位于一条直线上，学校位于这条线的起点。示意图如下:<br><img src="/2016/04/14/汇编语言学习第二章-寄存器/4.png" alt="汇编语言学习第二章-寄存器"><br>&ensp;&ensp;&ensp;&ensp;如果路人问路，图书馆在哪儿，那么可以有如下两种方式回答:</p>
+<ol>
+<li>从学校直走2826m即可达到图书馆</li>
+<li>从学校直走2000m到达体育馆，再直走826m达到图书馆<br>第一种方法是直接给出图书馆的物理地址(直接地址)，第二种方式是通过体育馆作为中介间隔告诉图书馆的位置。</li>
+</ol>
+<p>&ensp;&ensp;&ensp;&ensp;进一步来想，如果只能通过纸条告诉路人图书馆得位置。但是只有两张可以写三位数的纸条，此时怎么办呢，那么我们可以在第一张纸条上写上200作为段地址，第二张纸条写上826作为偏移地址。那么我们可以通过:段地址200*10+偏移地址826=2826来获知图书馆的位置。</p>
+<h2 id="2-4-段的概念和段寄存器"><a href="#2-4-段的概念和段寄存器" class="headerlink" title="2.4 段的概念和段寄存器"></a>2.4 段的概念和段寄存器</h2><p>&ensp;&ensp;&ensp;&ensp;首先要明确一个概念，内存并没有分段，是CPU在寻址的时候进行分段的，如图所示：<br><img src="/2016/04/14/汇编语言学习第二章-寄存器/5.png" alt="汇编语言学习第二章-寄存器"><br>&ensp;&ensp;&ensp;&ensp;我们可以认为10000H-100FFH组成一个段，该段的起始地址为10000H，段地址为1000H,大小为100H,我们也可以认为10000H-1007FH和10080H-100FFH位两个段，两个段的起始地址分别为10000H和10080H，段地址为1000H和1008H，段的大小为80H。如果一个段的偏移地址长度为N位，那么这个段的大小为2^N。</p>
+<p>&ensp;&ensp;&ensp;&ensp;前面讲过CPU内部提供两个16位的地址通过加法器合成20位物理地址，那么提供16位段地址的部件是什么呢，显然是CPU内部的寄存器啦，8086CPU内部有四个段寄存器分别为CS,SS,DS,ES</p>
+<h2 id="2-5-CS和IP"><a href="#2-5-CS和IP" class="headerlink" title="2.5 CS和IP"></a>2.5 CS和IP</h2><p>&ensp;&ensp;&ensp;&ensp;CS和IP作为两个非常重要寄存器，其中CS为代码段寄存器，IP为偏移量，通过公式CS<em>16+IP便可合成CPU当前要读取指令的物理地址。比如当前CS中存储为M，IP存储为N，那么CPU将从M</em>16+N的合成地址中取一条指令执行。<br><img src="/2016/04/14/汇编语言学习第二章-寄存器/6.png" alt="汇编语言学习第二章-寄存器"><br>通过CS和IP合成当前指令并取指令的逻辑图如上图所示。主要步骤如下:</p>
+<ol>
+<li>将CS和IP送入地址加法器合成20位物理地址为2000H*16+0000H=20000H</li>
+<li>通过输入输出控制电路将20位物理地址送到地址总线进行寻址</li>
+<li>将寻址到的汇编指令mov ax,0123H对应的机器码0123B8H依次通过数据总线传输到CPU中的指令缓冲器中。</li>
+<li>执行指令，此时IP=IP+执行指令的长度，跳转步骤1.<br><strong><table><tr><td bgcolor="BlueViolet">说明一点，8086CPU加点复位后，CS和IP分别被设置为CS=FFFFH，IP=0000H，即开机后的第一条执行指令地址为FFFF0H。</td></tr></table></strong></li>
+</ol>
+<h2 id="2-6-修改CS和IP，代码段的介绍"><a href="#2-6-修改CS和IP，代码段的介绍" class="headerlink" title="2.6 修改CS和IP，代码段的介绍"></a>2.6 修改CS和IP，代码段的介绍</h2><p>&ensp;&ensp;&ensp;&ensp;CS与IP组成CPU当前执行指令的位置，可以通过修改CS与IP改变CPU执行指令的顺序。然而问题来了，如何改变CS与IP 的值呢，这里要注意的是不能使用MOV指令改变CS和IP寄存器的值，因为8086CPU没有提供这样的功能。其实修改CS与IP的值方式有很多种，这里仅介绍jmp。 jmp 段地址:偏移地址 可改变CS与IP寄存器中的值，从而完成CPU执行指令顺序的跳转。比如jmp 12:34 这里CS=0012H IP=0034H 执行jmp 12:34之后将直接跳转到00154H处取指令执行。若仅仅想改变IP的值不改变CS的值，可以使用jmp 某一个合法寄存器  </p>
+<ul>
+<li>代码段为存放代码的一段内存区域，比如如下一段汇编代码：<pre><code>mov ax,0000
+add ax,123H
+mov bx,ax
+jmp bx
+</code></pre>
+
+</li>
+</ul>
+<p>以上一段代码段存储在内存为123B0H-123B9H这段内存区域中，共十个字节，那么我们可以成为这段内存区域为代码段，前面已经介绍过要执行这段代码要把CS：IP指向mov ax，0000的内存区域即可。</p>
+<h2 id="本章完结"><a href="#本章完结" class="headerlink" title="本章完结"></a>本章完结</h2>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#本博文系列参考自-lt-lt-汇编语言-gt-gt-第三版，作者-王爽"><span class="toc-number">1.</span> <span class="toc-text">本博文系列参考自&lt;&lt;汇编语言&gt;&gt;第三版，作者:王爽</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-通用寄存器和字在寄存器中的存储"><span class="toc-number"></span> <span class="toc-text">2.1 通用寄存器和字在寄存器中的存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-一些汇编指令和物理地址"><span class="toc-number"></span> <span class="toc-text">2.2 一些汇编指令和物理地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-16位机和8086进行寻址的方法"><span class="toc-number"></span> <span class="toc-text">2.3 16位机和8086进行寻址的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-段的概念和段寄存器"><span class="toc-number"></span> <span class="toc-text">2.4 段的概念和段寄存器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-CS和IP"><span class="toc-number"></span> <span class="toc-text">2.5 CS和IP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-修改CS和IP，代码段的介绍"><span class="toc-number"></span> <span class="toc-text">2.6 修改CS和IP，代码段的介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本章完结"><span class="toc-number"></span> <span class="toc-text">本章完结</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&text=汇编语言学习第二章-寄存器"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&title=汇编语言学习第二章-寄存器"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&is_video=false&description=汇编语言学习第二章-寄存器"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=汇编语言学习第二章-寄存器&body=Check out this article: http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&title=汇编语言学习第二章-寄存器"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&title=汇编语言学习第二章-寄存器"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&title=汇编语言学习第二章-寄存器"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&title=汇编语言学习第二章-寄存器"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/04/14/汇编语言学习第二章-寄存器/&name=汇编语言学习第二章-寄存器&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="本文仅代表博主自己对C++内存对象模型的一点理解，本博文只对博主自己负责，不对任何人负责。前言&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;就如《深度探索C++对象模型》一书中介绍的C++的封装并没有给C++带来过多的开销。然而面向对象的编程方法却给广大的编程者提供了一种更为开阔的编程思路。 分析&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;好，我们主要看看前面一句。开销是什么，这里的开销主要">
+<meta name="keywords" content="C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C艹对象模型浅析">
+<meta property="og:url" content="http://yoursite.com/2015/07/28/C艹对象模型浅析/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="本文仅代表博主自己对C++内存对象模型的一点理解，本博文只对博主自己负责，不对任何人负责。前言&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;就如《深度探索C++对象模型》一书中介绍的C++的封装并没有给C++带来过多的开销。然而面向对象的编程方法却给广大的编程者提供了一种更为开阔的编程思路。 分析&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;好，我们主要看看前面一句。开销是什么，这里的开销主要">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2015/07/28/C艹对象模型浅析/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/07/28/C艹对象模型浅析/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/07/28/C艹对象模型浅析/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/07/28/C艹对象模型浅析/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/07/28/C艹对象模型浅析/5.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/07/28/C艹对象模型浅析/6.jpg">
+<meta property="og:updated_time" content="2018-09-17T18:03:54.860Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C艹对象模型浅析">
+<meta name="twitter:description" content="本文仅代表博主自己对C++内存对象模型的一点理解，本博文只对博主自己负责，不对任何人负责。前言&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;就如《深度探索C++对象模型》一书中介绍的C++的封装并没有给C++带来过多的开销。然而面向对象的编程方法却给广大的编程者提供了一种更为开阔的编程思路。 分析&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;好，我们主要看看前面一句。开销是什么，这里的开销主要">
+<meta name="twitter:image" content="http://yoursite.com/2015/07/28/C艹对象模型浅析/1.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>C艹对象模型浅析</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/08/31/关于在函数中返回动态分配的内存/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/07/20/剑指offer-面试题3-二维数组中的查找/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/07/28/C艹对象模型浅析/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&text=C艹对象模型浅析"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&title=C艹对象模型浅析"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&is_video=false&description=C艹对象模型浅析"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C艹对象模型浅析&body=Check out this article: http://yoursite.com/2015/07/28/C艹对象模型浅析/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&title=C艹对象模型浅析"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&title=C艹对象模型浅析"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&title=C艹对象模型浅析"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&title=C艹对象模型浅析"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&name=C艹对象模型浅析&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#本文仅代表博主自己对C-内存对象模型的一点理解，本博文只对博主自己负责，不对任何人负责。"><span class="toc-number">1.</span> <span class="toc-text">本文仅代表博主自己对C++内存对象模型的一点理解，本博文只对博主自己负责，不对任何人负责。</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number"></span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number"></span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number"></span> <span class="toc-text">完结</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        C艹对象模型浅析
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-07-28T03:39:09.000Z" itemprop="datePublished">2015-07-28</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/C/">C++</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h5 id="本文仅代表博主自己对C-内存对象模型的一点理解，本博文只对博主自己负责，不对任何人负责。"><a href="#本文仅代表博主自己对C-内存对象模型的一点理解，本博文只对博主自己负责，不对任何人负责。" class="headerlink" title="本文仅代表博主自己对C++内存对象模型的一点理解，本博文只对博主自己负责，不对任何人负责。"></a>本文仅代表博主自己对C++内存对象模型的一点理解，本博文只对博主自己负责，不对任何人负责。</h5><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&ensp;&ensp;&ensp;&ensp;就如<strong>《深度探索C++对象模型》</strong>一书中介绍的C++的封装并没有给C++带来过多的开销。然而面向对象的编程方法却给广大的编程者提供了一种更为开阔的编程思路。</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>&ensp;&ensp;&ensp;&ensp;好，我们主要看看前面一句。开销是什么，这里的开销主要指C++类所占内存的空间。首先,我们看这样一个例子，我们定义一个结构体和类，结构体和类中含有相同的数据成员。除此之外再无其他。我们看看这个结构体和类的大小是多少:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">struct A</span><br><span class="line">&#123;</span><br><span class="line">    int a;</span><br><span class="line">    int b;</span><br><span class="line">    int c;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class B</span><br><span class="line">&#123;</span><br><span class="line">    int a;</span><br><span class="line">    int b;</span><br><span class="line">    int c;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">"sizeof(A)="</span>&lt;&lt;sizeof(A)&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">"sizeof(B)="</span>&lt;&lt;sizeof(B)&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果:<br><img src="/2015/07/28/C艹对象模型浅析/1.jpg" alt="C++"><br><strong> <table><tr><td bgcolor="BlueViolet">看来只要数据成员相同,那么就算声明为类,也不会带来额外的内存开销。</td></tr></table></strong></p>
+<p>&ensp;&ensp;&ensp;&ensp;现在我们再看一个例子，我们让类B更加复杂一下，我们添加一个静态成员变量和，一个静态成员函数，一个非静态成员函数，一个虚函数:我们再看看这个例子的结果将是什么样的结果:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">struct A</span><br><span class="line">&#123;</span><br><span class="line">    int a;</span><br><span class="line">    int b;</span><br><span class="line">    int c;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class B</span><br><span class="line">&#123;</span><br><span class="line">private:</span><br><span class="line">    int a;</span><br><span class="line">    int b;</span><br><span class="line">    int c;</span><br><span class="line">    static int d;</span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    static void fun1()</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">"This is a static fun1."</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void fun2()</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">"This is ordinary fun2."</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    virtual void fun3()</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">"This is a virtual fun3."</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">"sizeof(A)="</span>&lt;&lt;sizeof(A)&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">"sizeof(B)="</span>&lt;&lt;sizeof(B)&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结果:<br><img src="/2015/07/28/C艹对象模型浅析/2.jpg" alt="C++"><br>在这里我们增加了一个静态数据成员d，一个静态成员函数fun1，非静态的成员函数fun2一个虚函数fun3.不难发现就类的代码规模来说，的确增加了不少，然而结果仅仅比之前增加了四个字节的开销。<table><tr><td bgcolor="red">《深度探索C++对象模型》中有这样一句话说C++封装所带来的开销主要来源于虚函数。</td></tr></table></p>
+<p>那么我们可以先看看结构体A的内存分布:可以产生结构体A的一个对象:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A *a;</span><br><span class="line">a=new A;</span><br></pre></td></tr></table></figure></p>
+<p>对象a的内存结构如下:<br><img src="/2015/07/28/C艹对象模型浅析/3.jpg" alt="C++"><br>显然a中有三个整型数据元素a,b,c刚好12个字节</p>
+<p>现在我们看看类B的内存分布</p>
+<p>可以产生类B的一个对象:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">B *b;</span><br><span class="line">b=new B;</span><br></pre></td></tr></table></figure></p>
+<p>对象B的内存结构如下:<br><img src="/2015/07/28/C艹对象模型浅析/4.jpg" alt="C++"><br><strong> <table><tr><td bgcolor="BlueViolet">可以看到尽管类B封装的很多的内容，但是较之A而言仅仅多了一个__vfptr，我们不禁回忆起前面的一句话，C++的封装的开销主要来自于虚函数。其实如果对C++有一定了解的同学都不难猜出，这个ptr其实就是一个虚表指针。正因为这个虚表指针给封装带来了额外的4个字节的开销。</td></tr></table></strong></p>
+<p>那么虚表指针是什么呢，虚表指针其实就是指向虚函数表的一个指针。当一个类中有虚函数的时候，类会自动生成一个指针，该指针保存的是该类中第一个虚函数的地址。所以就算有多个虚函数仍然只需要保存一个虚表指针，然后通过这个指针逐个遍历就可以取得各个虚函数的地址。然而关于虚函数在C++中功能特性我们留待下次一起学习了。<br><img src="/2015/07/28/C艹对象模型浅析/5.jpg" alt="C++"></p>
+<p><br><br>这下一目了然了吧。<br>那么我们可以总结一下影响类的内存开销主要有以下几个方面:</p>
+<table><tr><td bgcolor="BlueViolet">1. 非静态的数据成员<br>2. 虚函数表指针<br>3. 当然既然类也是要考虑内存对齐的。 </td></tr></table>
+
+
+
+<p>还有几点需要注意:<br><strong>1.类的静态数据成员存储在全局变量区，不带来C++内存开销,该静态数据成员属于整个类的不属于具体某个对象，其初始化要在类外进行。<br>2.类的静态成员函数是属于整个类的，不属于某个对象，不会带来内存开销。注意类的静态成员函数中不能调用非静态的成员变量。<br>3.类的普通成员函数始终在程序的代码区中保存一份，不带来内存开销.</strong></p>
+<p>最后再通过一张图片只管展示结构体A和类B的内存布局:<br><img src="/2015/07/28/C艹对象模型浅析/6.jpg" alt="C++"></p>
+<h2 id="完结"><a href="#完结" class="headerlink" title="完结"></a>完结</h2>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#本文仅代表博主自己对C-内存对象模型的一点理解，本博文只对博主自己负责，不对任何人负责。"><span class="toc-number">1.</span> <span class="toc-text">本文仅代表博主自己对C++内存对象模型的一点理解，本博文只对博主自己负责，不对任何人负责。</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number"></span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number"></span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number"></span> <span class="toc-text">完结</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/07/28/C艹对象模型浅析/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&text=C艹对象模型浅析"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&title=C艹对象模型浅析"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&is_video=false&description=C艹对象模型浅析"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C艹对象模型浅析&body=Check out this article: http://yoursite.com/2015/07/28/C艹对象模型浅析/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&title=C艹对象模型浅析"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&title=C艹对象模型浅析"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&title=C艹对象模型浅析"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&title=C艹对象模型浅析"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/07/28/C艹对象模型浅析/&name=C艹对象模型浅析&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

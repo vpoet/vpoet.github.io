@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="开始第一个opencv测试程序:不多说,直接上代码,代码注释很详尽:123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172///////////////////////////////">
+<meta name="keywords" content="OpenCV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VC++6.0下通过opencv读入图像并反色">
+<meta property="og:url" content="http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="开始第一个opencv测试程序:不多说,直接上代码,代码注释很详尽:123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172///////////////////////////////">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/1.png">
+<meta property="og:updated_time" content="2018-09-17T18:22:16.135Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VC++6.0下通过opencv读入图像并反色">
+<meta name="twitter:description" content="开始第一个opencv测试程序:不多说,直接上代码,代码注释很详尽:123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172///////////////////////////////">
+<meta name="twitter:image" content="http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>VC++6.0下通过opencv读入图像并反色</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/07/20/剑指offer-面试题1-赋值运算符函数/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/07/20/基于最大最小距离的分类数目上限K确定的聚类方法/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&text=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&title=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&is_video=false&description=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VC++6.0下通过opencv读入图像并反色&body=Check out this article: http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&title=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&title=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&title=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&title=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&name=VC++6.0下通过opencv读入图像并反色&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行结果"><span class="toc-number">2.</span> <span class="toc-text">运行结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">3.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        VC++6.0下通过opencv读入图像并反色
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-01-06T12:19:43.000Z" itemprop="datePublished">2015-01-06</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/OpenCV/">OpenCV</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>第一个opencv测试程序:不多说,直接上代码,代码注释很详尽:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">////////////////////////////////////////////////////////////////////////</span><br><span class="line">//</span><br><span class="line">// 该程序从文件中读入一幅图像，将之反色，然后显示出来. </span><br><span class="line">//</span><br><span class="line">////////////////////////////////////////////////////////////////////////</span><br><span class="line"><span class="comment">#include &lt;stdlib.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;math.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;cv.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;highgui.h&gt; </span></span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">    IplImage* img = 0;    //定义图像文件指针,指向载入的原始图像</span><br><span class="line">    IplImage* pDstImg = 0; //定义图像文件指针,指向反色后的图像</span><br><span class="line">    //定位图像的长度(像素),宽带(像素),通道数(指每个像素用多少个字节表示)   </span><br><span class="line">    int height,width,channels;  </span><br><span class="line">    uchar *data;      //存储图像具体的像素数据</span><br><span class="line"></span><br><span class="line">    char Image_Filename[20];  //输入图像文件的文件名</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Please input the filename of image:\n"</span>);</span><br><span class="line">    scanf(<span class="string">"%s"</span>,Image_Filename);</span><br><span class="line"> </span><br><span class="line">   //载入图像函数,第一个参数为图像名称.第二个参数为辅助参数，</span><br><span class="line">   //有正,零,负三种值.正数表示以三通道图像载入(三通道即一个像素用3个字节表示),0表示</span><br><span class="line">   //以单通道载入图像，负数代表载入图像的通道数由图像本身决定.</span><br><span class="line">    img=cvLoadImage(Image_Filename,0);  </span><br><span class="line">                         </span><br><span class="line">                        </span><br><span class="line">    <span class="keyword">if</span>(!img)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Could not load image file: %s\n"</span>,argv[1]);</span><br><span class="line">        <span class="built_in">exit</span>(0);</span><br><span class="line">    &#125; </span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    height    = img-&gt;height;  //获取图像高度(像素)</span><br><span class="line">    width     = img-&gt;width;        //获取图像宽度(像素)</span><br><span class="line">    channels  = img-&gt;nChannels; //获取图像通道数</span><br><span class="line">    data      = (uchar *)img-&gt;imageData;  //获取图像像素数据</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Processing a %dx%d image with %d channels\n"</span>,height,width,channels); </span><br><span class="line">    </span><br><span class="line">    //创建一个名称为mainWin的窗口,用于显示图像.CV_WINDOW_AUTOSIZE值为1</span><br><span class="line">    //表示固定窗口大小,若第二个参数为0表示窗口大小可变,图像也会随着窗口的大小而改变</span><br><span class="line">    cvNamedWindow(<span class="string">"mainWin"</span>, 0);   </span><br><span class="line">                </span><br><span class="line">    //设置窗口的位置,第一个参数为窗口的名字,后面两个参数为窗口显示的位置,(0,0)表示显示在桌面的左上角.    </span><br><span class="line">    cvMoveWindow(<span class="string">"mainWin"</span>, 0, 0); </span><br><span class="line">    </span><br><span class="line">    //cvCreateImage函数返回指向一个图像文件指针,第一个参数指定图像</span><br><span class="line">    //的大小,第二个参数制定 像素的位深度，主要有以下支持格式：</span><br><span class="line">    //IPL_DEPTH_8U, IPL_DEPTH_8S, IPL_DEPTH_16U,IPL_DEPTH_16S, IPL_DEPTH_32S,</span><br><span class="line">    //最后一个参数制定图像的通道数</span><br><span class="line">    pDstImg = cvCreateImage(cvGetSize(img),img-&gt;depth,img-&gt;nChannels); </span><br><span class="line">                                     </span><br><span class="line">                                           </span><br><span class="line">                                    </span><br><span class="line">    //cvNot(IplImage* src,IplImage* dest)将src图像的每个像素数据的每一位取反赋值给dest图像对应像素点数据</span><br><span class="line">    cvNot(img, pDstImg);   </span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    cvShowImage(<span class="string">"mainWin"</span>, img ); //在之前创建的mainWin窗口中显示图像</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    cvWaitKey(0);     //等待敲击键盘,结束程序    </span><br><span class="line">    </span><br><span class="line">    cvReleaseImage(&amp;img );  //释放图像文件指针</span><br><span class="line">    cvReleaseImage(&amp;pDstImg ); </span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h2><p><img src="/2015/01/06/VC-6-0下通过opencv读入图像并反色/1.png" alt="OpenCV"></p>
+<h2 id="完结"><a href="#完结" class="headerlink" title="完结"></a>完结</h2>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行结果"><span class="toc-number">2.</span> <span class="toc-text">运行结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">3.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&text=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&title=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&is_video=false&description=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VC++6.0下通过opencv读入图像并反色&body=Check out this article: http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&title=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&title=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&title=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&title=VC++6.0下通过opencv读入图像并反色"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/01/06/VC-6-0下通过opencv读入图像并反色/&name=VC++6.0下通过opencv读入图像并反色&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

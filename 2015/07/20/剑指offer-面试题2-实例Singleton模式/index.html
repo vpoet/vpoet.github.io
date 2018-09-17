@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="题目设计一个类,我们只能生成该类的一个实例 这道题显然是对设计模式的考察,很明显是单例模式。什么是单例模式呢,就是就像题目所说的只能生成一个类的实例。那么我们不难考虑到下面几点:  不能new多个对象，那么必然该类的构造函数是私有的 类对象只有一个，那么必然该对象只能有一个私有的静态成员变量，该成员变量为类实例或者类实例的指针。 但是我们同时还要考虑到如果获取这个唯一对象实例,那么该类必然有一个公">
+<meta name="keywords" content="剑指offer(C&#x2F;C++)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="剑指offer-面试题2.实例Singleton模式">
+<meta property="og:url" content="http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="题目设计一个类,我们只能生成该类的一个实例 这道题显然是对设计模式的考察,很明显是单例模式。什么是单例模式呢,就是就像题目所说的只能生成一个类的实例。那么我们不难考虑到下面几点:  不能new多个对象，那么必然该类的构造函数是私有的 类对象只有一个，那么必然该对象只能有一个私有的静态成员变量，该成员变量为类实例或者类实例的指针。 但是我们同时还要考虑到如果获取这个唯一对象实例,那么该类必然有一个公">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-17T17:39:31.663Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="剑指offer-面试题2.实例Singleton模式">
+<meta name="twitter:description" content="题目设计一个类,我们只能生成该类的一个实例 这道题显然是对设计模式的考察,很明显是单例模式。什么是单例模式呢,就是就像题目所说的只能生成一个类的实例。那么我们不难考虑到下面几点:  不能new多个对象，那么必然该类的构造函数是私有的 类对象只有一个，那么必然该对象只能有一个私有的静态成员变量，该成员变量为类实例或者类实例的指针。 但是我们同时还要考虑到如果获取这个唯一对象实例,那么该类必然有一个公">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>剑指offer-面试题2.实例Singleton模式</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/07/20/剑指offer-面试题3-二维数组中的查找/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/07/20/剑指offer-面试题1-赋值运算符函数/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&text=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&title=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&is_video=false&description=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=剑指offer-面试题2.实例Singleton模式&body=Check out this article: http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&title=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&title=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&title=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&title=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&name=剑指offer-面试题2.实例Singleton模式&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#题目"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#答案"><span class="toc-number">2.</span> <span class="toc-text">答案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">3.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        剑指offer-面试题2.实例Singleton模式
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-07-20T13:16:21.000Z" itemprop="datePublished">2015-07-20</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/剑指offer-C-C/">剑指offer(C/C++)</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>设计一个类,我们只能生成该类的一个实例</p>
+<p>这道题显然是对设计模式的考察,很明显是单例模式。什么是单例模式呢,就是就像题目所说的只能生成一个类的实例。那么我们不难考虑到下面几点:</p>
+<ol>
+<li>不能new多个对象，那么必然该类的构造函数是私有的</li>
+<li>类对象只有一个，那么必然该对象只能有一个私有的静态成员变量，该成员变量为类实例或者类实例的指针。</li>
+<li>但是我们同时还要考虑到如果获取这个唯一对象实例,那么该类必然有一个公有的成员函数来获取这个唯一的类实例然    而由于不允许new对象,那么必须提供一种类操作该接口的方式,很显然就是静态成员函数。</li>
+</ol>
+<h2 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h2><p>至此不难写设计出这样一个类:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class CSingle</span><br><span class="line">&#123;</span><br><span class="line">private:</span><br><span class="line">    CSingle()  //私有构造函数,禁止new对象实例</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    static CSingle *m_pInstance;  //私有静态全局变量,保证唯一性</span><br><span class="line">public:</span><br><span class="line">    static CSingle * GetInstance()  //提供一个共有接口获取该唯一类实例</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(m_pInstance == NULL)</span><br><span class="line">            m_pInstance = new CSingle();</span><br><span class="line">        <span class="built_in">return</span> m_pInstance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>那么我们构造这个唯一实例是这样的:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CSingle *Single=CSingle::GetInstance();//当该唯一实例不存在时,这是唯一获取类实例的方法。</span><br><span class="line">CSingle *Single1=Single-&gt;GetInstance();//当上一步执行后便可用此方法获取唯一类实例</span><br><span class="line">CSingle &amp; Single1=Single-&gt;GetInstance();//当然也可以这样</span><br></pre></td></tr></table></figure></p>
+<p><strong> <table><tr><td bgcolor="BlueViolet">上面的做法对于单线程来说可以表现的很好了，但是对于多线程来说，就可能有问题了。当两个线程同时创建实例的时候，这时候实例不存在，这时候就可能产生两个类实例，于是我们就需要用同步的方法保证创建的时候只有一个线程。线程同步的方法很多，可以是临界区，可以是互斥等。</td></tr></table></strong></p>
+<h2 id="完结"><a href="#完结" class="headerlink" title="完结"></a>完结</h2>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#题目"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#答案"><span class="toc-number">2.</span> <span class="toc-text">答案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">3.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&text=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&title=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&is_video=false&description=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=剑指offer-面试题2.实例Singleton模式&body=Check out this article: http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&title=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&title=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&title=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&title=剑指offer-面试题2.实例Singleton模式"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/07/20/剑指offer-面试题2-实例Singleton模式/&name=剑指offer-面试题2.实例Singleton模式&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
