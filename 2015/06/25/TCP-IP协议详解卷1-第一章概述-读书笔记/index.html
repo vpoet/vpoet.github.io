@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="引言百度百科这样说TCP/IP协议:Transmission Control Protocol/Internet Protocol的简写，中译名为传输控制协议/因特网互联协议，又名网络通讯协议，是Internet最基本的协议、Internet国际互联网络的基础，由网络层的IP协议和传输层的TCP协议组成。TCP/IP 定义了电子设备如何连入因特网，以及数据如何在它们之间传输的标准。协议采用了4层的">
+<meta name="keywords" content="TCP&#x2F;IP协议详解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP&#x2F;IP协议详解卷1--第一章概述--读书笔记">
+<meta property="og:url" content="http://yoursite.com/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="引言百度百科这样说TCP/IP协议:Transmission Control Protocol/Internet Protocol的简写，中译名为传输控制协议/因特网互联协议，又名网络通讯协议，是Internet最基本的协议、Internet国际互联网络的基础，由网络层的IP协议和传输层的TCP协议组成。TCP/IP 定义了电子设备如何连入因特网，以及数据如何在它们之间传输的标准。协议采用了4层的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/5.jpg">
+<meta property="og:updated_time" content="2018-09-18T16:56:29.332Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TCP&#x2F;IP协议详解卷1--第一章概述--读书笔记">
+<meta name="twitter:description" content="引言百度百科这样说TCP/IP协议:Transmission Control Protocol/Internet Protocol的简写，中译名为传输控制协议/因特网互联协议，又名网络通讯协议，是Internet最基本的协议、Internet国际互联网络的基础，由网络层的IP协议和传输层的TCP协议组成。TCP/IP 定义了电子设备如何连入因特网，以及数据如何在它们之间传输的标准。协议采用了4层的">
+<meta name="twitter:image" content="http://yoursite.com/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/1.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>TCP/IP协议详解卷1--第一章概述--读书笔记</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/07/20/剑指offer-面试题1-赋值运算符函数/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/06/24/wireshark-教你如何抓包/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-IP各层的意义和各层的意义"><span class="toc-number">2.</span> <span class="toc-text">TCP/IP各层的意义和各层的意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP地址和端口"><span class="toc-number">3.</span> <span class="toc-text">IP地址和端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DNS服务"><span class="toc-number">4.</span> <span class="toc-text">DNS服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于Tcp-ip通信过程"><span class="toc-number">5.</span> <span class="toc-text">关于Tcp/ip通信过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">6.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        TCP/IP协议详解卷1--第一章概述--读书笔记
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-06-25T02:44:11.000Z" itemprop="datePublished">2015-06-25</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/TCP-IP协议详解/">TCP/IP协议详解</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>百度百科这样说TCP/IP协议:<br>Transmission Control Protocol/Internet Protocol的简写，中译名为传输控制协议/因特网互联协议，又名网络通讯协议，是Internet最基本的协议、Internet国际互联网络的基础，由网络层的IP协议和传输层的TCP协议组成。TCP/IP 定义了电子设备如何连入因特网，以及数据如何在它们之间传输的标准。协议采用了4层的层级结构，每一层都呼叫它的下一层所提供的协议来完成自己的需求。通俗而言：TCP负责发现传输的问题，一有问题就发出信号，要求重新传输，直到所有数据安全正确地传输到目的地。而IP是给因特网的每一台联网设备规定一个地址。</p>
+<p>好了我再说说我的理解:<br>先说说OSI(open System Interconnection)互联开放模型,是某某某组织为网络互联提供的一种标准模型。记住只是一种模型而已,它大致是这样的，为了表示原创性,图片我尽量画。<br><img src="/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/1.jpg" alt="TCP/IP协议详解"></p>
+<p>好了，在整个理论的模型基础上,美国某某某组织定义和实现了TCP/IP协议,这个协议就是现在我们网络连接时这样用的协议,记住TCP/IP是个协议族,意思是他有很多协议,好了既然TCP/IP协议是在OSI模型上定义和实现的,那么两者的关系大概是这样:<br><img src="/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/2.jpg" alt="TCP/IP协议详解"></p>
+<p>明白了,TCP/IP协议将OSI的前三层融合到一层，而传输层和网络层仍然没有改变,物理层为OSI模型中的数据链路层和物理层这两层的结合。</p>
+<h2 id="TCP-IP各层的意义和各层的意义"><a href="#TCP-IP各层的意义和各层的意义" class="headerlink" title="TCP/IP各层的意义和各层的意义"></a>TCP/IP各层的意义和各层的意义</h2><blockquote>
+<ul>
+<li>首先:应用层是基于底层协议实现的各种协议，是我们用户之间可以接触到的,比如我们远程登录使用的Telnet协议,比如我们发送邮件的SMTP(简单邮件传输协议),比如我们接受邮件用的pop3协议等。</li>
+<li>其次:传输层,书上说传输层是提供端到端的传输，好晦涩，端是啥我不懂，我的理解是传输层通过端口来进行两个主机之间的通信，因为网络层的IP封装已经提供了主机IP的信息，所以传输层只需要提供某IP的端口信息就可以建议与该主机相<br>应的端口进行通信。传输层的协议包括TCP和UDP两种协议,TCP是可靠的,什么是可靠的呢,意思就是使用TCP协议通信会对本次通信的过程进行保证,保证什么,保证信息从源机到目的机，其中用的机制包括建立连接，超时重传等。UDP提供一种不可靠,不可靠是啥意思呢，就是我只管给你传送,至于你收不到收不到也就跟我没毛关系了。</li>
+<li>网络层，主要协议是IP协议，网络层就是网络互联，意思就是什么呢，提供连个主机之间的连接，而这种连接就是基于IP地址的，理论上说只要是连接到Internet网上的每台主机都有一个唯一的IP地址，这样我们就可以用这个唯一IP就可以连接到任何一台电脑，但是理想很丰满，现实很骨感，IPv4是不够用的，那意思就是说每台电脑就不可能划分唯一的IP，但是科学技术是第一生产力，你懂的总有方法解决，比如划分子网，DHCP等用来缓解IP紧张的压力，但是这不是根本的，根本的就是IPv6的推行和发展才能从根本上解决这个问题，提供足够的IP给世界上接入互联网的每个终端。</li>
+<li>最后；物理层也叫网络接口层，这一层的主要目的是提供网络传输的物理细节，这一层包括了很多协议比如最流行的的以太网协议。</li>
+</ul>
+</blockquote>
+<p><img src="/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/3.jpg" alt="TCP/IP协议详解"></p>
+<h2 id="IP地址和端口"><a href="#IP地址和端口" class="headerlink" title="IP地址和端口"></a>IP地址和端口</h2><p>IP地址是很重要的，为啥重要，如何没有这玩意儿我们不可能连接到Internet整个庞大的网络，现在用的IPv4提供的IP数量理论上是不够用的，所以呢有某某某组织也在积极的推动IPv6标准IPv4包括32位，通常表示成点分10进制，例如192.168.1.1但是在内存中还是2进制表示,类似<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10000000011000000000000100000001</span><br></pre></td></tr></table></figure></p>
+<p>其结构类似这样:<br><img src="/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/4.jpg" alt="TCP/IP协议详解"></p>
+<p>这就是5类IP地址的结构,<br>我们可以根据网络号转化成点分10进制:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A类:0.0.0.0-127.255.255.255</span><br><span class="line">B类:128.0.0.0-191.255.255.255</span><br><span class="line">C类:192.0.0.0-223.255.255.255</span><br><span class="line">D类:234.0.0.0-239.255.255.255</span><br><span class="line">E类:240.0.0.0-247.255.255.255</span><br></pre></td></tr></table></figure></p>
+<p>从A-E网络号站的位数依次增多，主机号占的位数依次减少意思就是啥呢:分配一个A类地址,可以包含2^24个主机 而分配一个C类地址只有2^8(256)个主机,我们还可以直接根据点分10进制的的一个数判断此类IP到底是那类IP地址。当然如果有子网划分就不能只靠判断哪类地址来决定其主机个数，还要结合子网掩码一起来判断。</p>
+<h2 id="DNS服务"><a href="#DNS服务" class="headerlink" title="DNS服务"></a>DNS服务</h2><p>DNS Domain Name System 域名解析系统,这是Internet提供的一项服务。当我们上网的时候需要在浏览器键入我们想要浏览的网站，通常我们是键入网站的域名，为什么用域名呢，因为域名好用啊，好记啊，不敢想象如果我们浏览网站总是要通过IP来访问服务器那是多么痛苦。那这个DNS是如何实现的呢，其实DNS解析是通过<br>分布在世界各地的DNS服务器来实现的，每个DNS服务器都会维护一个默认的域名和IP映射表，当我们通过域名访问网站的时候，该域名首先进入DNS服务器，然后在域名IP映射表中进行查询，如果查询到对应的IP，然后通过IP对服务器进行寻址访问，如果没有找到该映射项，那么就会在上一级的DNS服务器中继续查找。</p>
+<p>我们可以通过dos下运行命令来查询本机的DNS服务器IP<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipconfig /all</span><br></pre></td></tr></table></figure></p>
+<h2 id="关于Tcp-ip通信过程"><a href="#关于Tcp-ip通信过程" class="headerlink" title="关于Tcp/ip通信过程"></a>关于Tcp/ip通信过程</h2><p>那么说到这里，大家就想问TCP/IP协议族如何实现主机之间的通信连接呢这里我只有继续发挥的我绘画功底和想象能力了:<br><img src="/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/5.jpg" alt="TCP/IP协议详解"><br>这就是TCP/IP通信过程,其实就是解包和封包的过程，而后面我们具体就要学的就是各个层中有哪些解包封包的方式，这些解包封包方式的差异就形成了各个层中不同的协议。</p>
+<h2 id="完结"><a href="#完结" class="headerlink" title="完结"></a>完结</h2>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-IP各层的意义和各层的意义"><span class="toc-number">2.</span> <span class="toc-text">TCP/IP各层的意义和各层的意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP地址和端口"><span class="toc-number">3.</span> <span class="toc-text">IP地址和端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DNS服务"><span class="toc-number">4.</span> <span class="toc-text">DNS服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于Tcp-ip通信过程"><span class="toc-number">5.</span> <span class="toc-text">关于Tcp/ip通信过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">6.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+

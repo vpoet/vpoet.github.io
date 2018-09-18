@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言同样，有下面一段代码:12345678910111213#include &amp;lt;iostream&amp;gt;using namespace std;int main()&amp;#123;    const int i = 0;     int *j = (int *) &amp;amp;i;     *j = 1;     cout&amp;lt;&amp;lt;&quot;i address = 0x&quot;&amp;lt;&amp;lt;hex&amp;lt;">
+<meta name="keywords" content="C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C与C++中的const">
+<meta property="og:url" content="http://yoursite.com/2015/07/30/C与C艹中的const/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="前言同样，有下面一段代码:12345678910111213#include &amp;lt;iostream&amp;gt;using namespace std;int main()&amp;#123;    const int i = 0;     int *j = (int *) &amp;amp;i;     *j = 1;     cout&amp;lt;&amp;lt;&quot;i address = 0x&quot;&amp;lt;&amp;lt;hex&amp;lt;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2015/07/30/C与C艹中的const/1.png">
+<meta property="og:image" content="http://yoursite.com/2015/07/30/C与C艹中的const/2.png">
+<meta property="og:updated_time" content="2018-09-18T16:44:41.213Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C与C++中的const">
+<meta name="twitter:description" content="前言同样，有下面一段代码:12345678910111213#include &amp;lt;iostream&amp;gt;using namespace std;int main()&amp;#123;    const int i = 0;     int *j = (int *) &amp;amp;i;     *j = 1;     cout&amp;lt;&amp;lt;&quot;i address = 0x&quot;&amp;lt;&amp;lt;hex&amp;lt;">
+<meta name="twitter:image" content="http://yoursite.com/2015/07/30/C与C艹中的const/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>C与C++中的const</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/08/30/strcat函数的坑点/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/07/28/C艹对象模型浅析/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number">2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结论"><span class="toc-number">3.</span> <span class="toc-text">结论</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        C与C++中的const
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-07-30T14:07:54.000Z" itemprop="datePublished">2015-07-30</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/C/">C++</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>同样，有下面一段代码:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    const int i = 0; </span><br><span class="line">    int *j = (int *) &amp;i; </span><br><span class="line">    *j = 1; </span><br><span class="line">    cout&lt;&lt;<span class="string">"i address = 0x"</span>&lt;&lt;hex&lt;&lt;&amp;i&lt;&lt;<span class="string">","</span>&lt;&lt;<span class="string">"j address = 0x"</span>&lt;&lt;hex&lt;&lt;j&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">"i value = "</span>&lt;&lt;i&lt;&lt;<span class="string">","</span>&lt;&lt;<span class="string">"j value = "</span>&lt;&lt;*j&lt;&lt;endl;</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们在C++编译器中运行如下:<br><img src="/2015/07/30/C与C艹中的const/1.png" alt="C++"></p>
+<p>我们发现const关键字严格遵守了其关于常量的定义。然而疑问出来了为什么相同的地址会输出不同的值。</p>
+<p>同样的代码我们放入C编译器中运行会发现输出结果:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i value = 1,j value =1</span><br></pre></td></tr></table></figure></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>这是为什么呢？</p>
+<p>以下是我自己的一点理解:</p>
+<ol>
+<li>C语言中const为不可改变的变量，其实质仍然是变量，仍然会在编译期间分配内存，那么我们可以获取该内存并修改该内存处的值。这样虽然不允许直接对const 变量修改，但是间接修改该内存位置的值达到修改该变量的效果。</li>
+<li>C++中const关键字定义的是常量类型，在编译的期间直接确定了其值，比如我们<br>可进行如下操作在C++中 编译是可以通过的。<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 const int size=5;</span><br><span class="line">2 int array[size];</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>表明在编译的时候size是已经确定了。然而这种情况在C语言的情况下是绝对不可以编译通过的，其实我猜，当我们在c++中定义一个const类型的变量的时候，编译器也是要为其分配内存的，只不过在编译阶段遇到时候直接替换，在运行的时候，该常量的值是直接存在某个寄存器中，这样运行代码中需要用到该值时直接可从寄存器中索取，而非在内存中索取。</p>
+<p>那么，我们可以作这样一种测试，我们把const前面加上volatile关键字防止编译器直接从寄存器中取常量值，而是从内存中取，代码如下:<br><img src="/2015/07/30/C与C艹中的const/2.png" alt="C++"></p>
+<p>我们发现此时，const类型变量i的值是已经被改变了，则证明我猜想的思路也许是对的，又或许编译器用了更复杂的方式处理，但是大概思路应该是这样吧!</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>前面说了那么多无非有以下两点:</p>
+<table><tr><td bgcolor="green">1. C C++中的const变量是都要分配内存的。<br>2. C++只不过在编译的时候直接进行变量替换，同时在运行过程中直接在寄存器中取const变量的值，这是C++编译器优化的结果。<br>3. 而对于C语言而言每次const使用都是直接从内存中取值，这样每次const变量的间接改变都能得到反映。</td></tr></table>
+
+
+
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number">2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结论"><span class="toc-number">3.</span> <span class="toc-text">结论</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+

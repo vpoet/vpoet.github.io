@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言我们学习TCP/IP协议无非是利用这些协议进行通信开发，然而如果让我们自己来直接根据协议规则和协议格式来进行网络开发无疑是一件十分痛苦的事情，显然为了减轻程序员的开发负担，windows提供给我们一套网络开发的API，这个API族就叫做套接字库。 但是套接字和TCP/IP协议到底是什么关系呢。我们暂且可以这样理解,如图: win socket APIsocketMSDN这样描述: 该函数创建一">
+<meta name="keywords" content="网络编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows套接字相关函数">
+<meta property="og:url" content="http://yoursite.com/2014/08/10/windows套接字相关函数/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="前言我们学习TCP/IP协议无非是利用这些协议进行通信开发，然而如果让我们自己来直接根据协议规则和协议格式来进行网络开发无疑是一件十分痛苦的事情，显然为了减轻程序员的开发负担，windows提供给我们一套网络开发的API，这个API族就叫做套接字库。 但是套接字和TCP/IP协议到底是什么关系呢。我们暂且可以这样理解,如图: win socket APIsocketMSDN这样描述: 该函数创建一">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2014/08/10/windows套接字相关函数/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/08/10/windows套接字相关函数/1.png">
+<meta property="og:image" content="http://yoursite.com/2014/08/10/windows套接字相关函数/2.png">
+<meta property="og:image" content="http://yoursite.com/2014/08/10/windows套接字相关函数/3.png">
+<meta property="og:image" content="http://yoursite.com/2014/08/10/windows套接字相关函数/4.png">
+<meta property="og:image" content="http://yoursite.com/2014/08/10/windows套接字相关函数/5.png">
+<meta property="og:image" content="http://yoursite.com/2014/08/10/windows套接字相关函数/6.png">
+<meta property="og:updated_time" content="2018-09-18T15:56:18.796Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="windows套接字相关函数">
+<meta name="twitter:description" content="前言我们学习TCP/IP协议无非是利用这些协议进行通信开发，然而如果让我们自己来直接根据协议规则和协议格式来进行网络开发无疑是一件十分痛苦的事情，显然为了减轻程序员的开发负担，windows提供给我们一套网络开发的API，这个API族就叫做套接字库。 但是套接字和TCP/IP协议到底是什么关系呢。我们暂且可以这样理解,如图: win socket APIsocketMSDN这样描述: 该函数创建一">
+<meta name="twitter:image" content="http://yoursite.com/2014/08/10/windows套接字相关函数/1.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>windows套接字相关函数</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/11/21/TCP-协议三次握手过程解析带实例/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/08/03/套接字基础/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#win-socket-API"><span class="toc-number">2.</span> <span class="toc-text">win socket API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#socket"><span class="toc-number">3.</span> <span class="toc-text">socket</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bind"><span class="toc-number">4.</span> <span class="toc-text">bind</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#listen"><span class="toc-number">5.</span> <span class="toc-text">listen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#connect"><span class="toc-number">6.</span> <span class="toc-text">connect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#send"><span class="toc-number">7.</span> <span class="toc-text">send</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#recv"><span class="toc-number">8.</span> <span class="toc-text">recv</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#recvfrom-sendto"><span class="toc-number">9.</span> <span class="toc-text">recvfrom,sendto</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">10.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        windows套接字相关函数
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2014-08-10T12:53:10.000Z" itemprop="datePublished">2014-08-10</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/网络编程/">网络编程</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们学习TCP/IP协议无非是利用这些协议进行通信开发，然而如果让我们自己来直接根据协议规则和协议格式来进行网络开发无疑是一件十分痛苦的事情，显然为了减轻程序员的开发负担，windows提供给我们一套网络开发的API，这个API族就叫做套接字库。</p>
+<p>但是套接字和TCP/IP协议到底是什么关系呢。<br>我们暂且可以这样理解,如图:<br><img src="/2014/08/10/windows套接字相关函数/1.jpg" alt="网络编程"></p>
+<h2 id="win-socket-API"><a href="#win-socket-API" class="headerlink" title="win socket API"></a>win socket API</h2><h2 id="socket"><a href="#socket" class="headerlink" title="socket"></a>socket</h2><p>MSDN这样描述:<br><img src="/2014/08/10/windows套接字相关函数/1.png" alt="网络编程"></p>
+<p>该函数创建一个套接字,参数af为协议族类型AF_INET为TCP/IP协议族type为套接字类型，有两种类似SOCK_STREAM为使用TCP进行通信 SOCK_STREAM为使用UDP进行通信protocol可以为IPPROTO_TCP或IPPROTO_IP，此参数英语type保存一致</p>
+<h2 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h2><p>顾名思义即绑定,用过套接字编程的都知道,当我们编写服务端程序的时候需要使用该函数MSDN这样描述:<br><img src="/2014/08/10/windows套接字相关函数/2.png" alt="网络编程"></p>
+<p>该函数将一个本地的地址绑定到一个套接字上，如果绑定不错位，将返回0，否则将返回SOCKET_ERROR,参数s为需要绑定的套接字,参数*name为一个常量sockaddr结构，但是一般情况下我们都使用sockaddr_in结构,其结构定义如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct sockaddr_in &#123;</span><br><span class="line">　　short int sin_family; /* Address family */</span><br><span class="line">　　unsigned short int sin_port; /* Port number */</span><br><span class="line">　　struct sin_addr sin_addr; /* Internet address */</span><br><span class="line">　　unsigned char sin_zero[8]; /* Same size as struct sockaddr */</span><br><span class="line">　　&#125;;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>sin_family：指代协议族，在socket编程中只能是AF_INET</li>
+<li>sin_port：存储端口号（使用网络字节顺序）</li>
+<li>sin_addr：存储IP地址，使用in_addr这个数据结构</li>
+<li>sin_zero：是为了让sockaddr与sockaddr_in两个数据结构保持大小相同而保留的空字节。</li>
+</ul>
+<p>其中sin_addr定义:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef struct in_addr &#123;</span><br><span class="line">　　union &#123;</span><br><span class="line">　　struct&#123; unsigned char s_b1,s_b2, s_b3,s_b4;&#125; S_un_b;</span><br><span class="line">　　struct&#123; unsigned short s_w1, s_w2;&#125; S_un_w;</span><br><span class="line">　　unsigned long S_addr;</span><br><span class="line">　　&#125; S_un;</span><br><span class="line">　　&#125; IN_ADDR;</span><br></pre></td></tr></table></figure></p>
+<p>一般我们这样用<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">addrs.sin_addr.S_addr=inet_addr(<span class="string">"192.168.1.110"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>函数inet_addr可以把字符串直接转换成in_addr类型也可以使用inet_ntoa()将in_addr类型转换为字符串类型参数namelen即为name的长度 即sizeof(name)<br>举个典型的例子:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SOCKET s;</span><br><span class="line">s=socket(AF_INET,SOCK_STREAM,IPPOTO_TCP);</span><br><span class="line">sockaddr_in addrbindto;</span><br><span class="line">addrbindto.sin_family=AF_INET;</span><br><span class="line">addrbindto.port=htons(8001) //htons是将u_short类型转换为网络字节序,htonl是将u_long类型转换为网络字节序</span><br><span class="line">addrbindto.sin_addr_S_addr=inet_addr(<span class="string">"192.168.1.110"</span>)</span><br><span class="line"><span class="built_in">bind</span>(s,(</span><br><span class="line">const struct sockaddr</span><br><span class="line">)&amp;addrbindto,sizeof(addrbindto))</span><br></pre></td></tr></table></figure></p>
+<h2 id="listen"><a href="#listen" class="headerlink" title="listen"></a>listen</h2><p><img src="/2014/08/10/windows套接字相关函数/3.png" alt="网络编程"><br>该函数在指定的套接字上监听连接请求,参数s为监听的套接字,backlog表示表示允许的最大连接数<br>举例:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">listen(s,5);</span><br></pre></td></tr></table></figure></p>
+<h2 id="connect"><a href="#connect" class="headerlink" title="connect"></a>connect</h2><p><img src="/2014/08/10/windows套接字相关函数/4.png" alt="网络编程"><br>该函数对一个指定的套接字建立连接参数s为想要建立连接的套接字name为sockaddr类型的指针namelen即为sizeof(name)</p>
+<p>举例:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SOCKET s;</span><br><span class="line">sockaddr_in conaddr;</span><br><span class="line">s=socket(AF_INET,SOCK_STREAM,IPPOTO_TCP);</span><br><span class="line">conaddr.sin_family=AF_INET;</span><br><span class="line">conaddr.port=htons(8001) //htons是将u_short类型转换为网络字节序,htonl是将u_long类型转换为网络字节序</span><br><span class="line">conaddr.sin_addr_S_addr=inet_addr(<span class="string">"192.168.1.110"</span>)</span><br><span class="line">connect(s,(const struct sockaddr)&amp;conaddr,sizeof(conaddr))</span><br></pre></td></tr></table></figure></p>
+<h2 id="send"><a href="#send" class="headerlink" title="send"></a>send</h2><p><img src="/2014/08/10/windows套接字相关函数/5.png" alt="网络编程"><br>该函数用于向已连接的套接字发送数据<br>参数s为一个连接到的套接字<br>参数buf为发送数据的缓存<br>参数len为发送缓存数据的长度</p>
+<p>举例:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">char buf[20]=<span class="string">"hello123"</span>;</span><br><span class="line">send(s,(const char *)buf,sizeof(buf))</span><br></pre></td></tr></table></figure></p>
+<h2 id="recv"><a href="#recv" class="headerlink" title="recv"></a>recv</h2><p><img src="/2014/08/10/windows套接字相关函数/6.png" alt="网络编程"></p>
+<p>该函数为接受函数:参数与send类型,不在赘述</p>
+<h2 id="recvfrom-sendto"><a href="#recvfrom-sendto" class="headerlink" title="recvfrom,sendto"></a>recvfrom,sendto</h2><p>这两个函数功能与send与recv类似,只是它们用于UDP通信中</p>
+<h2 id="完结"><a href="#完结" class="headerlink" title="完结"></a>完结</h2>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#win-socket-API"><span class="toc-number">2.</span> <span class="toc-text">win socket API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#socket"><span class="toc-number">3.</span> <span class="toc-text">socket</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bind"><span class="toc-number">4.</span> <span class="toc-text">bind</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#listen"><span class="toc-number">5.</span> <span class="toc-text">listen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#connect"><span class="toc-number">6.</span> <span class="toc-text">connect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#send"><span class="toc-number">7.</span> <span class="toc-text">send</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#recv"><span class="toc-number">8.</span> <span class="toc-text">recv</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#recvfrom-sendto"><span class="toc-number">9.</span> <span class="toc-text">recvfrom,sendto</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">10.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+

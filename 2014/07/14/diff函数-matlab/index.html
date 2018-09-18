@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="diff函数式用于求导数和差分的.无论是求导数还是差分,其原理是一样的.前后相邻元素之差 上下相邻行之差 diff(A)和diff(A,1,1) 差分 diff(A,1,2)第三个参数为2时,则变为列差分运算 diff(A,2,2) 完结">
+<meta name="keywords" content="matlab">
+<meta property="og:type" content="article">
+<meta property="og:title" content="diff函数(matlab)">
+<meta property="og:url" content="http://yoursite.com/2014/07/14/diff函数-matlab/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="diff函数式用于求导数和差分的.无论是求导数还是差分,其原理是一样的.前后相邻元素之差 上下相邻行之差 diff(A)和diff(A,1,1) 差分 diff(A,1,2)第三个参数为2时,则变为列差分运算 diff(A,2,2) 完结">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2014/07/14/diff函数-matlab/1.png">
+<meta property="og:image" content="http://yoursite.com/2014/07/14/diff函数-matlab/2.png">
+<meta property="og:image" content="http://yoursite.com/2014/07/14/diff函数-matlab/4.png">
+<meta property="og:image" content="http://yoursite.com/2014/07/14/diff函数-matlab/5.png">
+<meta property="og:image" content="http://yoursite.com/2014/07/14/diff函数-matlab/6.png">
+<meta property="og:updated_time" content="2018-09-18T16:27:49.260Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="diff函数(matlab)">
+<meta name="twitter:description" content="diff函数式用于求导数和差分的.无论是求导数还是差分,其原理是一样的.前后相邻元素之差 上下相邻行之差 diff(A)和diff(A,1,1) 差分 diff(A,1,2)第三个参数为2时,则变为列差分运算 diff(A,2,2) 完结">
+<meta name="twitter:image" content="http://yoursite.com/2014/07/14/diff函数-matlab/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>diff函数(matlab)</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/07/18/基于TCP套接字实现的简单Demo/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/07/10/TLV-Demo讲解/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#diff函数式用于求导数和差分的-无论是求导数还是差分-其原理是一样的"><span class="toc-number">1.</span> <span class="toc-text">diff函数式用于求导数和差分的.无论是求导数还是差分,其原理是一样的.</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前后相邻元素之差"><span class="toc-number"></span> <span class="toc-text">前后相邻元素之差</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上下相邻行之差-diff-A-和diff-A-1-1"><span class="toc-number"></span> <span class="toc-text">上下相邻行之差 diff(A)和diff(A,1,1)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#差分-diff-A-1-2"><span class="toc-number"></span> <span class="toc-text">差分 diff(A,1,2)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#diff-A-2-2"><span class="toc-number"></span> <span class="toc-text">diff(A,2,2)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number"></span> <span class="toc-text">完结</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        diff函数(matlab)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2014-07-14T09:58:30.000Z" itemprop="datePublished">2014-07-14</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/matlab/">matlab</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h5 id="diff函数式用于求导数和差分的-无论是求导数还是差分-其原理是一样的"><a href="#diff函数式用于求导数和差分的-无论是求导数还是差分-其原理是一样的" class="headerlink" title="diff函数式用于求导数和差分的.无论是求导数还是差分,其原理是一样的."></a>diff函数式用于求导数和差分的.无论是求导数还是差分,其原理是一样的.</h5><h2 id="前后相邻元素之差"><a href="#前后相邻元素之差" class="headerlink" title="前后相邻元素之差"></a>前后相邻元素之差</h2><p><img src="/2014/07/14/diff函数-matlab/1.png" alt="matlab"></p>
+<h2 id="上下相邻行之差-diff-A-和diff-A-1-1"><a href="#上下相邻行之差-diff-A-和diff-A-1-1" class="headerlink" title="上下相邻行之差 diff(A)和diff(A,1,1)"></a>上下相邻行之差 diff(A)和diff(A,1,1)</h2><p><img src="/2014/07/14/diff函数-matlab/2.png" alt="matlab"><br><img src="/2014/07/14/diff函数-matlab/4.png" alt="matlab"></p>
+<h2 id="差分-diff-A-1-2"><a href="#差分-diff-A-1-2" class="headerlink" title="差分 diff(A,1,2)"></a>差分 diff(A,1,2)</h2><p>第三个参数为2时,则变为列差分运算<br><img src="/2014/07/14/diff函数-matlab/5.png" alt="matlab"></p>
+<h2 id="diff-A-2-2"><a href="#diff-A-2-2" class="headerlink" title="diff(A,2,2)"></a>diff(A,2,2)</h2><p><img src="/2014/07/14/diff函数-matlab/6.png" alt="matlab"></p>
+<h2 id="完结"><a href="#完结" class="headerlink" title="完结"></a>完结</h2>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#diff函数式用于求导数和差分的-无论是求导数还是差分-其原理是一样的"><span class="toc-number">1.</span> <span class="toc-text">diff函数式用于求导数和差分的.无论是求导数还是差分,其原理是一样的.</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前后相邻元素之差"><span class="toc-number"></span> <span class="toc-text">前后相邻元素之差</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上下相邻行之差-diff-A-和diff-A-1-1"><span class="toc-number"></span> <span class="toc-text">上下相邻行之差 diff(A)和diff(A,1,1)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#差分-diff-A-1-2"><span class="toc-number"></span> <span class="toc-text">差分 diff(A,1,2)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#diff-A-2-2"><span class="toc-number"></span> <span class="toc-text">diff(A,2,2)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number"></span> <span class="toc-text">完结</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
