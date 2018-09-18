@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="原理接触过网络协议的人对TLV一定或多或少的知道.作为一种自定义应用层标准.TLV使用十分广泛.他对数据封包有着很好的定义,简单实用. TLV示意图如下： 大家首先要区分数据包和数据报.本文的实例仅仅针对TLV数据包.而并未添加注册一些控制信令和报头形成数据报,而其中实际的数据有TLV包组成. TLV数据包和数据报的关系可由下图表示: 此外,TLV本身有两种结构,一种是基本TLV结构,另外一种是嵌">
+<meta name="keywords" content="网络编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TLV----Demo讲解">
+<meta property="og:url" content="http://yoursite.com/2014/07/10/TLV-Demo讲解/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="原理接触过网络协议的人对TLV一定或多或少的知道.作为一种自定义应用层标准.TLV使用十分广泛.他对数据封包有着很好的定义,简单实用. TLV示意图如下： 大家首先要区分数据包和数据报.本文的实例仅仅针对TLV数据包.而并未添加注册一些控制信令和报头形成数据报,而其中实际的数据有TLV包组成. TLV数据包和数据报的关系可由下图表示: 此外,TLV本身有两种结构,一种是基本TLV结构,另外一种是嵌">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2014/07/10/TLV-Demo讲解/1.png">
+<meta property="og:image" content="http://yoursite.com/2014/07/10/TLV-Demo讲解/2.png">
+<meta property="og:image" content="http://yoursite.com/2014/07/10/TLV-Demo讲解/3.png">
+<meta property="og:image" content="http://yoursite.com/2014/07/10/TLV-Demo讲解/4.png">
+<meta property="og:image" content="http://yoursite.com/2014/07/10/TLV-Demo讲解/5.png">
+<meta property="og:image" content="http://yoursite.com/2014/07/10/TLV-Demo讲解/6.png">
+<meta property="og:updated_time" content="2018-09-18T14:14:05.154Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TLV----Demo讲解">
+<meta name="twitter:description" content="原理接触过网络协议的人对TLV一定或多或少的知道.作为一种自定义应用层标准.TLV使用十分广泛.他对数据封包有着很好的定义,简单实用. TLV示意图如下： 大家首先要区分数据包和数据报.本文的实例仅仅针对TLV数据包.而并未添加注册一些控制信令和报头形成数据报,而其中实际的数据有TLV包组成. TLV数据包和数据报的关系可由下图表示: 此外,TLV本身有两种结构,一种是基本TLV结构,另外一种是嵌">
+<meta name="twitter:image" content="http://yoursite.com/2014/07/10/TLV-Demo讲解/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>TLV----Demo讲解</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/07/18/基于TCP套接字实现的简单Demo/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#原理"><span class="toc-number">1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编码方法："><span class="toc-number">2.</span> <span class="toc-text">编码方法：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解码方法："><span class="toc-number">3.</span> <span class="toc-text">解码方法：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo如下-C-实现"><span class="toc-number">4.</span> <span class="toc-text">Demo如下(C++实现):</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行结果："><span class="toc-number">5.</span> <span class="toc-text">运行结果：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        TLV----Demo讲解
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2014-07-10T10:26:00.000Z" itemprop="datePublished">2014-07-10</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/网络编程/">网络编程</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>接触过网络协议的人对TLV一定或多或少的知道.作为一种自定义应用层标准.TLV使用十分广泛.他对数据封包有着很好的定义,简单实用.</p>
+<p>TLV示意图如下：<br><img src="/2014/07/10/TLV-Demo讲解/1.png" alt="网络编程"></p>
+<p>大家首先要区分数据包和数据报.本文的实例仅仅针对TLV数据包.而并未添加注册一些控制信令和报头形成数据报,而其中实际的数据有TLV包组成.</p>
+<p>TLV数据包和数据报的关系可由下图表示:<br><img src="/2014/07/10/TLV-Demo讲解/2.png" alt="网络编程"></p>
+<p>此外,TLV本身有两种结构,一种是基本TLV结构,另外一种是嵌套TLV结构.而本文使用的是嵌套TLV结构.</p>
+<p>基本TLV包:<br><img src="/2014/07/10/TLV-Demo讲解/3.png" alt="网络编程"></p>
+<p>嵌套TLV包：<br><img src="/2014/07/10/TLV-Demo讲解/4.png" alt="网络编程"></p>
+<p>本文使用嵌套TLV包.<br><img src="/2014/07/10/TLV-Demo讲解/5.png" alt="网络编程"></p>
+<h2 id="编码方法："><a href="#编码方法：" class="headerlink" title="编码方法："></a>编码方法：</h2><ol>
+<li>将类型type用htonl转换为网络字节顺序，指针偏移+4</li>
+<li>将长度length用htonl转换为网络字节顺序，指针偏移+4</li>
+<li>若值value数据类型为int、char、short，则将其转换为网络字节顺序，指针偏移+4；若值为字符串类型，写进后，指针偏移+length</li>
+</ol>
+<h2 id="解码方法："><a href="#解码方法：" class="headerlink" title="解码方法："></a>解码方法：</h2><ol>
+<li>读取type 用ntohl转换为主机字节序得到类型，指针偏移+4</li>
+<li>读取lengh用ntohl转换为主机字节序得到长度；指针偏移+4</li>
+<li>根据得到的长度读取value，若value数据类型为int、char、short，用ntohl转换为主机字节序，指针偏移+4；若value数据类型为字符串类型，指针偏移+length</li>
+</ol>
+<p><strong> <table><tr><td bgcolor="BlueViolet">Type和Length的长度固定，一般那是2、4个字节（这里统一采用4个字节）；Value的长度有Length指定</td></tr></table></strong></p>
+<h2 id="Demo如下-C-实现"><a href="#Demo如下-C-实现" class="headerlink" title="Demo如下(C++实现):"></a>Demo如下(C++实现):</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;WinSock2.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;string&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#pragma comment(lib, "WS2_32")</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//定义枚举类型常量，来填充Tpye字段,其中emTlvNRoot填充根TLV包的Type</span><br><span class="line">//emTlvName字段用于填充子TLV字段中名字的Type字段.emTlvAge,emTlvColor类似</span><br><span class="line">//此类型字段是为了TLV包解码时识别到底是哪个TLV包.进而解析出对应的数据.</span><br><span class="line">enum emTLVNodeType</span><br><span class="line">&#123;</span><br><span class="line">    emTlvNNone = 0,</span><br><span class="line">    emTlvNRoot,            //根节点</span><br><span class="line">    emTlvName,            //名字</span><br><span class="line">    emTlvAge,            //年龄</span><br><span class="line">    emTlvColor            //颜色 1 白色 2 黑色</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//定义要封装成TLV包的数据,包括名字,年龄,颜色。</span><br><span class="line">typedef struct _CAT_INFO</span><br><span class="line">&#123;</span><br><span class="line">    char szName[12];</span><br><span class="line">    int    iAge;</span><br><span class="line">    int iColor;</span><br><span class="line">&#125;CAT_INFO,*LPCAT_INFO;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//此类为TLC类,其中有四个成员函数,WriteInt和Write是用于</span><br><span class="line">//把原始数据封装为TLV包然后存入内存区块.即TLV包编码过程</span><br><span class="line">//而ReadInt和Read用于把内存区块的TLV包解析出来.即为TLV包的解码过程</span><br><span class="line">class CTlvPacket</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line"></span><br><span class="line">    CTlvPacket(char *pBuf,unsigned int len):</span><br><span class="line">      m_pData(pBuf),m_uiLength(len),m_pEndData(m_pData+len),</span><br><span class="line">          m_pWritePtr(m_pData),m_pReadPtr(m_pData) &#123; &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="function"><span class="title">CTlvPacket</span></span>() &#123; &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    bool WriteInt(int data,bool bMovePtr = <span class="literal">true</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        int tmp = htonl(data);</span><br><span class="line">        <span class="built_in">return</span> Write(&amp;tmp,sizeof(int));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    bool Write(const void *pDst,unsigned int uiCount)</span><br><span class="line">    &#123;</span><br><span class="line">        ::memcpy(m_pWritePtr,pDst,uiCount);</span><br><span class="line">        m_pWritePtr += uiCount;</span><br><span class="line">        <span class="built_in">return</span> m_pWritePtr &lt; m_pEndData ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    bool ReadInt(int *data,bool bMovePtr = <span class="literal">true</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Read(data,sizeof(int));</span><br><span class="line">        *data = ntohl(*data);</span><br><span class="line">        <span class="built_in">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    bool Read(void *pDst,unsigned int uiCount)</span><br><span class="line">    &#123;</span><br><span class="line">        ::memcpy(pDst,m_pReadPtr,uiCount);</span><br><span class="line">        m_pReadPtr += uiCount;</span><br><span class="line">        <span class="built_in">return</span> m_pReadPtr &lt; m_pEndData ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">private:</span><br><span class="line"></span><br><span class="line">    char *m_pData;</span><br><span class="line"></span><br><span class="line">    unsigned int m_uiLength;</span><br><span class="line"></span><br><span class="line">    char *m_pEndData;</span><br><span class="line"></span><br><span class="line">    char *m_pWritePtr;</span><br><span class="line"></span><br><span class="line">    char *m_pReadPtr;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line"></span><br><span class="line">格式：</span><br><span class="line">    root L1 V</span><br><span class="line">        T L V T L V T L V</span><br><span class="line"></span><br><span class="line">    L1 的长度即为“T L V T L V T L V”的长度</span><br><span class="line"></span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//此函数实现TLV编码过程</span><br><span class="line">int TLV_EncodeCat(LPCAT_INFO pCatInfo, char *pBuf, int &amp;iLen)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!pCatInfo || !pBuf)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">return</span> -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    CTlvPacket enc(pBuf,iLen);</span><br><span class="line">    enc.WriteInt(emTlvNRoot);</span><br><span class="line">    enc.WriteInt(20+12+12); //length</span><br><span class="line"></span><br><span class="line">    enc.WriteInt(emTlvName);</span><br><span class="line">    enc.WriteInt(12);</span><br><span class="line">    enc.Write(pCatInfo-&gt;szName,12);</span><br><span class="line"></span><br><span class="line">    enc.WriteInt(emTlvAge);</span><br><span class="line">    enc.WriteInt(4);</span><br><span class="line">    enc.WriteInt(pCatInfo-&gt;iAge);</span><br><span class="line"></span><br><span class="line">    enc.WriteInt(emTlvColor);</span><br><span class="line">    enc.WriteInt(4);</span><br><span class="line">    enc.WriteInt(pCatInfo-&gt;iColor);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    iLen = 8+20+12+12;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//此函数实现TLV解码过程</span><br><span class="line">int TLV_DecodeCat(char *pBuf, int iLen, LPCAT_INFO pCatInfo)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!pCatInfo || !pBuf)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">return</span> -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    CTlvPacket encDec(pBuf,iLen);</span><br><span class="line">    int iType;</span><br><span class="line">    int iSum,iLength;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    encDec.ReadInt(&amp;iType);</span><br><span class="line">    <span class="keyword">if</span> (emTlvNRoot != iType)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">return</span> -2;</span><br><span class="line">    &#125;</span><br><span class="line">    encDec.ReadInt(&amp;iSum);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //通过判断Type头字段对TLV包进行解析</span><br><span class="line">    <span class="keyword">while</span> (iSum &gt; 0)</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        encDec.ReadInt(&amp;iType);//读取主TLV包的<span class="built_in">type</span>头</span><br><span class="line">        encDec.ReadInt(&amp;iLength);//读取主TLV包的length头</span><br><span class="line"></span><br><span class="line">        switch(iType)        //此时buff指针移动到子TLV包.并解析子TLV的<span class="built_in">type</span>头字段</span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> emTlvName:</span><br><span class="line">            encDec.Read(pCatInfo-&gt;szName,12);</span><br><span class="line">            iSum -= 20;</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> emTlvAge:</span><br><span class="line">            encDec.ReadInt(&amp;pCatInfo-&gt;iAge);</span><br><span class="line">            iSum -= 12;</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> emTlvColor:</span><br><span class="line">            encDec.ReadInt(&amp;pCatInfo-&gt;iColor);</span><br><span class="line">            iSum -= 12;</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line"></span><br><span class="line">        default:</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"TLV_DecodeCat unkonwn error. \n"</span>);</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//主函数</span><br><span class="line">int main(int argc, char* argv[])</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    int iRet, iLen;</span><br><span class="line">    char buf[256] = &#123;0&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    CAT_INFO cat;  //cat为定义的原始数据包括name,age,color</span><br><span class="line">    memset(&amp;cat,0,sizeof(cat));//cat结构体初始化</span><br><span class="line"></span><br><span class="line">    //对cat对象赋值</span><br><span class="line">    strcpy(cat.szName,<span class="string">"Tom"</span>);</span><br><span class="line">    cat.iAge = 5;</span><br><span class="line">    cat.iColor = 2;</span><br><span class="line"></span><br><span class="line">    //实现对cat对象的编码,编码结果存储在buf中.</span><br><span class="line">    iRet = TLV_EncodeCat(&amp;cat,buf,iLen);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //TLV编码成功与否的判断</span><br><span class="line">    <span class="keyword">if</span> ( 0 == iRet )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"TLV_EncodeCat ok, iLen = %d. \n"</span>,iLen);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"TLV_EncodeCat error \n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //将cat结构置为0</span><br><span class="line">    memset(&amp;cat,0,sizeof(cat));</span><br><span class="line"></span><br><span class="line">   //TLV包解码过程,将解包后的数据存入cat结构体对象</span><br><span class="line">    iRet = TLV_DecodeCat(buf,iLen,&amp;cat);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //输出解包后的结构体数据</span><br><span class="line">    <span class="keyword">if</span> ( 0 == iRet )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"TLV_DecodeCat ok, cat name = %s, age = %d, color = %d. \n"</span>,cat.szName,cat.iAge,cat.iColor);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"TLV_DecodeCat error, code = %d. \n"</span>, iRet);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    int iWait = getchar();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="/2014/07/10/TLV-Demo讲解/6.png" alt="网络编程"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><strong> <table><tr><td bgcolor="green">这里要对TLV包长：iLen = 8+20+12+12; 进行说明.为什么是这样呢.<br>因为一个完整的TLV包的主包包含Type字段和Length字段,每个字段占用4个字节所以共八个字节.而主TLV包的Value字段包含三个子TLV包.第一个子TLV包为name，而char szName[12]，加之子包Type和子包Length，所以一共20个字节同理,对于age子包共计八个字节,color子包共计八个字节.所以整个TLV包的长度就为8+20+12+12</td></tr></table></strong></p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#原理"><span class="toc-number">1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编码方法："><span class="toc-number">2.</span> <span class="toc-text">编码方法：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解码方法："><span class="toc-number">3.</span> <span class="toc-text">解码方法：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo如下-C-实现"><span class="toc-number">4.</span> <span class="toc-text">Demo如下(C++实现):</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行结果："><span class="toc-number">5.</span> <span class="toc-text">运行结果：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+

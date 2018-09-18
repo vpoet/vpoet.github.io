@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="套接字原理本文是续上文关于基于TCP套接字实现的简单Demo后进行套接字基本知识的讲解.可能文中有一些术语使用不太准确,但作为我自己的理解,尽量以通俗的语言为大家讲解. 套接字即Socket.用于在进程之间进行通信.当然进程通信的方式多种多样,但是Socket在进程通信的使用却十分广泛. 当然这里有几个概念需要区分.http,socket,tcp/ip之间的关系.大家都知道,现在互联网中广泛使用T">
+<meta name="keywords" content="网络编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="套接字基础">
+<meta property="og:url" content="http://yoursite.com/2014/08/03/套接字基础/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="套接字原理本文是续上文关于基于TCP套接字实现的简单Demo后进行套接字基本知识的讲解.可能文中有一些术语使用不太准确,但作为我自己的理解,尽量以通俗的语言为大家讲解. 套接字即Socket.用于在进程之间进行通信.当然进程通信的方式多种多样,但是Socket在进程通信的使用却十分广泛. 当然这里有几个概念需要区分.http,socket,tcp/ip之间的关系.大家都知道,现在互联网中广泛使用T">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2014/08/03/套接字基础/1.png">
+<meta property="og:updated_time" content="2018-09-18T14:40:02.132Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="套接字基础">
+<meta name="twitter:description" content="套接字原理本文是续上文关于基于TCP套接字实现的简单Demo后进行套接字基本知识的讲解.可能文中有一些术语使用不太准确,但作为我自己的理解,尽量以通俗的语言为大家讲解. 套接字即Socket.用于在进程之间进行通信.当然进程通信的方式多种多样,但是Socket在进程通信的使用却十分广泛. 当然这里有几个概念需要区分.http,socket,tcp/ip之间的关系.大家都知道,现在互联网中广泛使用T">
+<meta name="twitter:image" content="http://yoursite.com/2014/08/03/套接字基础/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>套接字基础</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/01/06/VC-6-0下通过opencv读入图像并反色/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/07/20/基于最大最小距离的分类数目上限K确定的聚类方法/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#套接字原理"><span class="toc-number">1.</span> <span class="toc-text">套接字原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#套接字分类"><span class="toc-number">2.</span> <span class="toc-text">套接字分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#阻塞与非阻塞"><span class="toc-number">3.</span> <span class="toc-text">阻塞与非阻塞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#套接字地址结构"><span class="toc-number">4.</span> <span class="toc-text">套接字地址结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP套接字的流程"><span class="toc-number">5.</span> <span class="toc-text">TCP套接字的流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Server"><span class="toc-number">6.</span> <span class="toc-text">Server:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Client"><span class="toc-number">7.</span> <span class="toc-text">Client:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">8.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        套接字基础
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2014-08-03T06:28:11.000Z" itemprop="datePublished">2014-08-03</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/网络编程/">网络编程</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="套接字原理"><a href="#套接字原理" class="headerlink" title="套接字原理"></a>套接字原理</h2><p>本文是续上文关于基于TCP套接字实现的简单Demo后进行套接字基本知识的讲解.<br>可能文中有一些术语使用不太准确,但作为我自己的理解,尽量以通俗的语言为大家讲解.</p>
+<p>套接字即Socket.用于在进程之间进行通信.当然进程通信的方式多种多样,但是Socket在进程通信的使用却十分广泛.</p>
+<p>当然这里有几个概念需要区分.http,socket,tcp/ip之间的关系.大家都知道,现在互联网中广泛使用TCP/IP协议,如果你想要在当前的网络中传输数据,那么就必须遵守TCP/IP协议准则,而http是属于应用层面的协议,与FTP,Telnet等协议类似,当然还有用户自定义的一些协议.这些协议的目的是对TCP/IP传输的数据进行解析.而Socket作为进程通信的手段也是基于TCP/IP协议的,然而我们要实现应用层协议或者实现自己的协议,我们必须使用Socket提供的借口才能使这些协议数据是通过TCP/IP协议准则传输的.</p>
+<p>总之,TCP/IP是根本的准则.通过Socket我们才能利用TCP/IP协议.而应用层协议则提供我们对Socket传输的数据进行封包和解析的标准.</p>
+<p>对于一个套接字,我们可以看做是一条电话线路,而这条线路的建立则是基于TCP/IP标准的,而电话线两端就是我们通信的双方.</p>
+<p>那么一个套接字如何标识一个链接或者说如何识别通信的双方呢.</p>
+<p><strong> <table><tr><td bgcolor="green">那就是套接字三元组:    套接字=协议+端口+IP</td></tr></table></strong></p>
+<h2 id="套接字分类"><a href="#套接字分类" class="headerlink" title="套接字分类"></a>套接字分类</h2><p>根据使用的协议类型不同,套接字分为三类.</p>
+<ol>
+<li>TCP套接字</li>
+<li>UDP套接字</li>
+<li>原始套接字.</li>
+</ol>
+<p>其中使用较为广泛的是TCP套接字和UDP套接字.而原始套接字是基于数据链路层协议.这里不作介绍.</p>
+<p>了解TCP协议都知道,TCP是面向链接的协议,在通信之前在通信双方要先进行“三次握手”成功建立连接后才能进行通信,所以其传输数据时可靠的,然而正是因为此原因,使得TCP的套接字传输效率要低一些.</p>
+<p>而UDP套接字是面向无连接，但是不提供可靠的数据传输.这点说明在传输的过程中有可能出现数据丢失,但是正是在传输之前不需要建议连接,这种数据传输的方式要高于TCP传输方式.</p>
+<p>原始套接字在这里也不作介绍,因为我也很少接触.</p>
+<h2 id="阻塞与非阻塞"><a href="#阻塞与非阻塞" class="headerlink" title="阻塞与非阻塞"></a>阻塞与非阻塞</h2><p>关于Socket字的方式 有两类</p>
+<ol>
+<li>阻塞方式</li>
+<li>非阻塞方式.</li>
+</ol>
+<p>我们可以简单的这样理解,阻塞方式是当建立多个套接字连接后,多个套接字同时传输和接受数据的方式可以成为非阻塞方式.而相反,当多个套接字进行连接后,只有只有当一个套接字完成接或者发数据的方式后才能进行下一个套接字的收或者发数据的动作成为阻塞方式.显然阻塞方式要比非阻塞方式复杂.但是在实际应用中大多使用阻塞方式进行数据传输.阻塞方式大多使用多线程的方式实现.</p>
+<h2 id="套接字地址结构"><a href="#套接字地址结构" class="headerlink" title="套接字地址结构"></a>套接字地址结构</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">struct sockaddr_in</span><br><span class="line">&#123;</span><br><span class="line">short sin_family;//AF_INET</span><br><span class="line">u_short sin_port;//16位端口号，网络字节顺序</span><br><span class="line">struct in_addr sin_addr;//32位IP地址，网络字节顺序</span><br><span class="line">char sin_zero[8];//保留</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个套接字地址结构就将套接字三元组完整的定义了.</p>
+<h2 id="TCP套接字的流程"><a href="#TCP套接字的流程" class="headerlink" title="TCP套接字的流程"></a>TCP套接字的流程</h2><p><img src="/2014/08/03/套接字基础/1.png" alt="网络编程"></p>
+<p>不难看出我们可以对TCP套接字的服务器端和客户端用到的API进行总结：</p>
+<h2 id="Server"><a href="#Server" class="headerlink" title="Server:"></a>Server:</h2><ul>
+<li>加载套接字库,进行套接字库初始化.这样我们才能使用需要的套接字.</li>
+<li><p>创建套接字：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">格式：SOCKET PASCAL FAR socket(int af,int <span class="built_in">type</span>,int procotol);</span><br><span class="line">参数：af: 通信发生的区域</span><br><span class="line"><span class="built_in">type</span>: 要建立的套接字类型</span><br><span class="line">procotol: 使用的特定协议</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>初始化服务器端套接字地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SOCKADDR_IN addrSrv;</span><br><span class="line">addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);</span><br><span class="line">addrSrv.sin_family = AF_INET;</span><br><span class="line">addrSrv.sin_port = htons(6000)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将套接字号和服务器端套接字进行绑定</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">功能：将套接字地址与所创建的套接字号联系起来。格式：int PASCAL FAR <span class="built_in">bind</span>(SOCKET s,const struct sockaddr FAR * name,int namelen);</span><br><span class="line">参数：s: 是由socket()调用返回的并且未作连接的套接字描述符（套接字号）。</span><br><span class="line">其它：没有错误，<span class="built_in">bind</span>()返回0，否则SOCKET_ERROR</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接受来自客户端的连接请求</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SOCKET PASCAL FAR accept(SOCKET s,struct sockaddr FAR * name,int FAR * addrlen);</span><br><span class="line">参数：同上</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数据发送和接受</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">功能：数据的发送与接收</span><br><span class="line">格式：int PASCAL FAR send(SOCKET s,const char FAR * buf,int len,int flags);</span><br><span class="line">int PASCAL FAR recv(SOCKET s,const char FAR * buf,int len,int flags);</span><br><span class="line">参数：buf:指向存有传输数据的缓冲区的指针</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>传输结束，关闭套接字</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">关闭套接字――closesocket()</span><br><span class="line">功能：关闭套接字s</span><br><span class="line">格式：BOOL PASCAL FAR closesocket(SOCKET s);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Client"><a href="#Client" class="headerlink" title="Client:"></a>Client:</h2><ol>
+<li>建立客户端套接字同上</li>
+<li>将客户端套接字和服务器端地址接受绑定同上</li>
+<li><p>连接服务器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int PASCAL FAR connect(SOCKET s,const struct sockaddr FAR * name,int namelen);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进行数据发送和接受同上</p>
+</li>
+<li>关闭套接字同上</li>
+</ol>
+<h2 id="完结"><a href="#完结" class="headerlink" title="完结"></a>完结</h2><p>至此,关于Window套接字就介绍完了,虽然不尽详尽,但是我尽可能给大家讲清楚一些基本概念,和一些基本流程.在完全理解后,读者可以参照基于TCP套接字实现的简单Demo一文写一些自己的套接字小Demo.</p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#套接字原理"><span class="toc-number">1.</span> <span class="toc-text">套接字原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#套接字分类"><span class="toc-number">2.</span> <span class="toc-text">套接字分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#阻塞与非阻塞"><span class="toc-number">3.</span> <span class="toc-text">阻塞与非阻塞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#套接字地址结构"><span class="toc-number">4.</span> <span class="toc-text">套接字地址结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP套接字的流程"><span class="toc-number">5.</span> <span class="toc-text">TCP套接字的流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Server"><span class="toc-number">6.</span> <span class="toc-text">Server:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Client"><span class="toc-number">7.</span> <span class="toc-text">Client:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">8.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
