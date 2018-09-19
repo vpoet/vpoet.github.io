@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言在进行多任务处理的时候我们往往会用到多线程技术，多线程理论上是多个线程同事处理不同的工作，但是这只针对多核的CPU而言，但是对于单核CPU多线程往往实现的方式是:CPU为各个线程分配时间片，让各个线程循环的执行，但是这个时间片又很短，所以给我们直观的印象就好像是多个线程在同时工作。 本文主要使用windows API CreateThread函数进行多线程演示。 CreateThread–MS">
+<meta name="keywords" content="windows多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CreateThread简单那多线程编程">
+<meta property="og:url" content="http://yoursite.com/2014/07/15/CreateThread简单那多线程编程/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="前言在进行多任务处理的时候我们往往会用到多线程技术，多线程理论上是多个线程同事处理不同的工作，但是这只针对多核的CPU而言，但是对于单核CPU多线程往往实现的方式是:CPU为各个线程分配时间片，让各个线程循环的执行，但是这个时间片又很短，所以给我们直观的印象就好像是多个线程在同时工作。 本文主要使用windows API CreateThread函数进行多线程演示。 CreateThread–MS">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2014/07/15/CreateThread简单那多线程编程/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/15/CreateThread简单那多线程编程/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/15/CreateThread简单那多线程编程/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/15/CreateThread简单那多线程编程/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/15/CreateThread简单那多线程编程/5.jpg">
+<meta property="og:updated_time" content="2018-09-19T14:43:26.695Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CreateThread简单那多线程编程">
+<meta name="twitter:description" content="前言在进行多任务处理的时候我们往往会用到多线程技术，多线程理论上是多个线程同事处理不同的工作，但是这只针对多核的CPU而言，但是对于单核CPU多线程往往实现的方式是:CPU为各个线程分配时间片，让各个线程循环的执行，但是这个时间片又很短，所以给我们直观的印象就好像是多个线程在同时工作。 本文主要使用windows API CreateThread函数进行多线程演示。 CreateThread–MS">
+<meta name="twitter:image" content="http://yoursite.com/2014/07/15/CreateThread简单那多线程编程/1.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>CreateThread简单那多线程编程</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/07/18/基于TCP套接字实现的简单Demo/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/07/14/diff函数-matlab/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CreateThread–MSDN"><span class="toc-number">2.</span> <span class="toc-text">CreateThread–MSDN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子"><span class="toc-number">3.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WaitForSingleObject"><span class="toc-number">4.</span> <span class="toc-text">WaitForSingleObject</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">5.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        CreateThread简单那多线程编程
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2014-07-15T06:25:14.000Z" itemprop="datePublished">2014-07-15</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/windows多线程/">windows多线程</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在进行多任务处理的时候我们往往会用到多线程技术，多线程理论上是多个线程同事处理不同的工作，但是这只针对多核的CPU而言，但是对于单核CPU多线程往往实现的方式是:CPU为各个线程分配时间片，让各个线程循环的执行，但是这个时间片又很短，所以给我们直观的印象就好像是多个线程在同时工作。</p>
+<p>本文主要使用windows API CreateThread函数进行多线程演示。</p>
+<h2 id="CreateThread–MSDN"><a href="#CreateThread–MSDN" class="headerlink" title="CreateThread–MSDN"></a>CreateThread–MSDN</h2><p>首先看看MSDN上关于CreateThread函数的说明:<br><img src="/2014/07/15/CreateThread简单那多线程编程/1.jpg" alt="windows多线程"></p>
+<p>参数说明:<br>lpThreadAttributes [in] Pointer to a SECURITY_ATTRIBUTES structure that determines whether the returned handle can be inherited by child processes. If lpThreadAttributes is NULL, the handle cannot be inherited.<br>该参数决定子线程是否继承父进程的安全属性，如果为NULL，表示不继承。关于SECURITY_ATTRIBUTES结构体请查询MSDN</p>
+<p>dwStackSize [in] Specifies the initial commit size of the stack, in bytes. The system rounds this value to the nearest page. If this value is zero, or is smaller than the default commit size, the default is to use the same size as the calling thread. For more information, see Thread Stack Size.<br>该参数指定线程堆栈大小，如果该值为零则使用默认的线程堆栈大小<br>lpStartAddress [in] Pointer to the application-defined function of type LPTHREAD_START_ROUTINE to be executed by the thread and represents the starting address of the thread. For more information on the thread function, see ThreadProc.<br>该参数则指定线程函数地址，说白了就是线程函数名<br>lpParameter [in] Specifies a single parameter value passed to the thread.<br>该参数为传递给线程函数的参数<br>dwCreationFlags [in] Specifies additional flags that control the creation of the thread. If the CREATE_SUSPENDED flag is specified, the thread is created in a suspended state, and will not run until the ResumeThread function is called. If this value is zero, the thread runs immediately after creation. At this time, no other values are supported.<br>该参数为创建标识,如果为零,那么线程创建后会立即执行，若为CREATE_SUSPENDED则线程创建后则会停止<br>lpThreadId [out] Pointer to a variable that receives the thread identifier.<br>该参数为创建线程的线程ID，线程ID就是唯一标识该线程的一个数字</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;windows.h&gt;</span></span><br><span class="line"><span class="comment">#include "stdio.h"</span></span><br><span class="line"></span><br><span class="line">DWORD WINAPI ThreadOne(LPVOID lpParameter)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"ThreadOne is Runing\n"</span>);</span><br><span class="line">	Sleep(100);</span><br><span class="line">	<span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	HANDLE HOne;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"***********************vpoet******************\n"</span>);</span><br><span class="line">	HOne=CreateThread(NULL,0,ThreadOne,NULL,0,NULL);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"ThreadOne Begin!\n"</span>);</span><br><span class="line">	CloseHandle(HOne);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"MainThread Over!\n"</span>);</span><br><span class="line">	<span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果:<br><img src="/2014/07/15/CreateThread简单那多线程编程/2.jpg" alt="windows多线程"></p>
+<table><tr><td bgcolor="green">是不是看出来什么问题了，子线程貌似没有运行主线程就退出了，这是怎么回事呢，这说明当开启子线程后还未来得及运行主线程就已经执行完毕，并且return了，那么此时整个程序也就退出,当然也就不会再运行子线程了。那么我们应该怎么控制了，既然子线程来不及执行，那么我就让主线程多运行一会儿等到子线程执行完了之后主线程再退出</td></tr></table>
+
+<p>那么我们在<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"MainThread Over!\n"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>之前再加入一句代码<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sleep(1000)</span><br></pre></td></tr></table></figure></p>
+<p>让主线程延时1s等待子线程的执行。因为1s足够让子线程执行完毕了所以这次程序就会在子线程运行结束后正常退出了。<br>运行结果如下:<br><img src="/2014/07/15/CreateThread简单那多线程编程/3.jpg" alt="windows多线程"></p>
+<p>这下是正常退出</p>
+<table><tr><td bgcolor="green"><br>当然还有其他方法来等待子线程正常执行并返回，对了还有个HOne这玩意儿还没有介绍，Handle其实就是一个句柄对象，就像是一个结构体或者类一样，只不过它是内核对象，由内核自己维护。为啥需要CloseHand()呢 百度百科是这样说的:<br>关闭一个内核对象。其中包括文件、文件映射、进程、线程、安全和同步对象等。在CreateThread成功之后会返回一个hThread的handle，且内核对象的计数加1，CloseHandle之后，引用计数减1，当变为0时，系统删除内核对象。<br>若在线程执行完之后，没有调用CloseHandle，在进程执行期间，将会造成内核对象的泄露，相当于句柄泄露，但不同于内存泄露，这势必会对系统的效率带来一定程度上的负面影响。但当进程结束退出后，系统会自动清理这些资源。</td></tr></table>
+
+<p>那么我们就需要知道线程到底是什么时候退出的呢，然后在其退出的时候把该线程句柄Close掉。</p>
+<h2 id="WaitForSingleObject"><a href="#WaitForSingleObject" class="headerlink" title="WaitForSingleObject"></a>WaitForSingleObject</h2><p>这里要介绍一个API叫WaitForSingleObject;<br><img src="/2014/07/15/CreateThread简单那多线程编程/4.jpg" alt="windows多线程"></p>
+<p>MSDN这样说该函数只有在以下两种情况下才返回:</p>
+<ol>
+<li>指定的对象有信号状态时</li>
+<li>等待超时</li>
+</ol>
+<p>那到底是什么意思呢，别着急，我们再看看参数:<br>hHandle [in] Handle to the object. For a list of the object types whose handles can be specified, see the following Remarks section.<br>If this handle is closed while the wait is still pending, the function’s behavior is undefined. </p>
+<p>该参数是一个句柄对象，如果句柄已经Close掉后还在WaitForSingleObject那么这种情况是未定义的，未定义是啥意思了就是会有意想不到的效果，说白了就是重大的隐藏的BUG</p>
+<p>dwMilliseconds [in] Specifies the time-out interval, in milliseconds. The function returns if the interval elapses, even if the object’s state is nonsignaled. If dwMilliseconds is zero, the function tests the object’s state and returns immediately. If dwMilliseconds is INFINITE, the function’s time-out interval never elapses.<br>该参数是指定超时间隔，如果参数为零则函数马上返回，如果参数为INFINITE，函数会一直等待。</p>
+<p>另外该函数的返回值有主要有两种状态：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WAIT_OBJECT_0 The state of the specified object is signaled. 表示句柄为有信号状态时候返回</span><br><span class="line">WAIT_TIMEOUT The time-out interval elapsed, and the object<span class="string">'s state is nonsignaled. 表示等待超时返回</span></span><br></pre></td></tr></table></figure></p>
+<p>现在我们去掉主函数的Sleep延时1s的代码,在CreateThread()后面加上一句：<br>WaitForSingleObject(HOne,INFINITE);<br>现在我们再看看运行结果:<br><img src="/2014/07/15/CreateThread简单那多线程编程/5.jpg" alt="windows多线程"><br>现在的执行结果完全正确了</p>
+<h2 id="完结"><a href="#完结" class="headerlink" title="完结"></a>完结</h2>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CreateThread–MSDN"><span class="toc-number">2.</span> <span class="toc-text">CreateThread–MSDN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子"><span class="toc-number">3.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WaitForSingleObject"><span class="toc-number">4.</span> <span class="toc-text">WaitForSingleObject</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">5.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+

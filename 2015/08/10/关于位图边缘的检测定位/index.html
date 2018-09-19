@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言最近几天做了一些图像检测定位的工作，虽然老师否定了这一方法。但是还是想把最近的工作总结总结。也许会对以后有所帮助。 POTDR_室外实验_20140120_160549TwoPoint2.mat此文件为原始数据文件。我们需要将其转化为位图进行分析处理。 过程123456789101112131415load POTDR_室外实验_20140120_160549TwoPoint2.mat  %加">
+<meta name="keywords" content="图像处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于位图边缘的检测定位">
+<meta property="og:url" content="http://yoursite.com/2015/08/10/关于位图边缘的检测定位/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="前言最近几天做了一些图像检测定位的工作，虽然老师否定了这一方法。但是还是想把最近的工作总结总结。也许会对以后有所帮助。 POTDR_室外实验_20140120_160549TwoPoint2.mat此文件为原始数据文件。我们需要将其转化为位图进行分析处理。 过程123456789101112131415load POTDR_室外实验_20140120_160549TwoPoint2.mat  %加">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2015/08/10/关于位图边缘的检测定位/1.png">
+<meta property="og:image" content="http://yoursite.com/2015/08/10/关于位图边缘的检测定位/2.png">
+<meta property="og:image" content="http://yoursite.com/2015/08/10/关于位图边缘的检测定位/3.png">
+<meta property="og:image" content="http://yoursite.com/2015/08/10/关于位图边缘的检测定位/4.png">
+<meta property="og:image" content="http://yoursite.com/2015/08/10/关于位图边缘的检测定位/5.png">
+<meta property="og:image" content="http://yoursite.com/2015/08/10/关于位图边缘的检测定位/6.png">
+<meta property="og:image" content="http://yoursite.com/2015/08/10/关于位图边缘的检测定位/7.png">
+<meta property="og:updated_time" content="2018-09-19T16:16:43.368Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于位图边缘的检测定位">
+<meta name="twitter:description" content="前言最近几天做了一些图像检测定位的工作，虽然老师否定了这一方法。但是还是想把最近的工作总结总结。也许会对以后有所帮助。 POTDR_室外实验_20140120_160549TwoPoint2.mat此文件为原始数据文件。我们需要将其转化为位图进行分析处理。 过程123456789101112131415load POTDR_室外实验_20140120_160549TwoPoint2.mat  %加">
+<meta name="twitter:image" content="http://yoursite.com/2015/08/10/关于位图边缘的检测定位/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>关于位图边缘的检测定位</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/08/30/strcat函数的坑点/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/07/30/C与C艹中的const/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#过程"><span class="toc-number">2.</span> <span class="toc-text">过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">3.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        关于位图边缘的检测定位
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-08-10T02:38:03.000Z" itemprop="datePublished">2015-08-10</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/图像处理/">图像处理</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近几天做了一些图像检测定位的工作，虽然老师否定了这一方法。但是还是想把最近的工作总结总结。也许会对以后有所帮助。</p>
+<p>POTDR_室外实验_20140120_160549TwoPoint2.mat此文件为原始数据文件。我们需要将其转化为位图进行分析处理。</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">load POTDR_室外实验_20140120_160549TwoPoint2.mat  %加载数据</span><br><span class="line"></span><br><span class="line">Data=data(1:size(data,1),:);  %Data两点扰动的矩阵数据388行*3472列</span><br><span class="line"></span><br><span class="line">ColmStart=100;  %因数据量太大，需要对列数据进行采样。从第100列开始取数据 </span><br><span class="line"></span><br><span class="line">ColmLag=10;     %采样数据间隔,每隔10列采一列</span><br><span class="line"></span><br><span class="line">VAR=[];     %定义一个空向量</span><br><span class="line">    </span><br><span class="line">ColmI=ColmStart:ColmLag:size(Data,2)-mod(size(Data,1),ColmLag)-ColmLag;   %ColmI为具体对3472列中哪些列进行采样绘图为1*331的向量</span><br><span class="line"></span><br><span class="line">NewData=Data(:,ColmI);  %NewData为在原3472行数据中采样抽取出来的145列.388*331(原始采样图像数据)</span><br><span class="line">  </span><br><span class="line">DiffData=diff(NewData,1); %DiffData为对NewData作一阶差分运算的差分矩阵也是145列 388*331</span><br></pre></td></tr></table></figure>
+<p>显示差分灰度图:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imshow(DiffData),title(<span class="string">'差分灰度图'</span>);</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2015/08/10/关于位图边缘的检测定位/1.png" alt="图像处理"><br>差分灰度图的边缘：(定位出红线的位置是本文的目标)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">I=edge(DiffData,<span class="string">'sobel'</span>,<span class="string">'vertical'</span>);%差分灰度图的边缘</span><br><span class="line">imshow(I),title(<span class="string">'差分灰度的边缘'</span>);</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2015/08/10/关于位图边缘的检测定位/2.png" alt="图像处理"></p>
+<p>由于红色边缘并不突出,所以我们需要利用图像膨胀使边缘轮廓清晰.膨胀matlab代码：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">B=[ 0 1 0  </span><br><span class="line">    1 1 1 </span><br><span class="line">    0 1 0 </span><br><span class="line">     ];</span><br><span class="line"> </span><br><span class="line">  A1=imdilate(I,B);%图像I被结构元素B膨胀</span><br><span class="line">  A2=imdilate(A1,B);</span><br><span class="line">  A3=imdilate(A2,B);</span><br><span class="line">  A4=imdilate(A3,B);</span><br><span class="line">  A5=imdilate(A4,B);</span><br><span class="line">  A6=imdilate(A5,B);</span><br><span class="line">  A7=imdilate(A6,B);</span><br><span class="line">  A8=imdilate(A7,B);</span><br><span class="line">  A9=imdilate(A8,B);</span><br><span class="line">  A10=imdilate(A9,B);</span><br><span class="line">  A11=imdilate(A10,B);</span><br><span class="line">     </span><br><span class="line">  A12=imdilate(A11,B);</span><br><span class="line">  A13=imdilate(A12,B);</span><br><span class="line">  A14=imdilate(A13,B);</span><br><span class="line">  A15=imdilate(A14,B);</span><br><span class="line">     </span><br><span class="line">  A16=imdilate(A15,B);</span><br><span class="line">  A17=imdilate(A16,B);</span><br><span class="line">  A18=imdilate(A17,B);</span><br><span class="line">  A19=imdilate(A18,B);</span><br><span class="line">     </span><br><span class="line">  A20=imdilate(A19,B);</span><br><span class="line">  A21=imdilate(A20,B);</span><br><span class="line">  A22=imdilate(A21,B);</span><br><span class="line">  A23=imdilate(A22,B);</span><br><span class="line">     </span><br><span class="line">  A24=imdilate(A23,B);</span><br><span class="line">  A25=imdilate(A24,B);</span><br><span class="line">  A26=imdilate(A25,B);</span><br><span class="line">  A27=imdilate(A26,B);</span><br><span class="line">     </span><br><span class="line">  A28=imdilate(A27,B);</span><br><span class="line">  A29=imdilate(A28,B);</span><br></pre></td></tr></table></figure></p>
+<p>膨胀29次后的图像(红色边缘逐渐清晰)：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imshow(A29);title(<span class="string">'3*3第二十九次膨胀'</span>);</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2015/08/10/关于位图边缘的检测定位/3.png" alt="图像处理"></p>
+<p>画出膨胀后的轮廓以便进行最终的红线定位：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LastPerim=bwperim(A29); %对膨胀29次的图像求轮廓</span><br><span class="line">imshow(LastPerim),title(<span class="string">'二十九次膨胀后的轮廓'</span>);</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2015/08/10/关于位图边缘的检测定位/4.png" alt="图像处理"></p>
+<p>轮廓逐渐清晰明了。那么接下来我们如何检查出这两条红线的位置呢。<br>其实这里的原理很简单。</p>
+<p>1.我们首先只保留图像中白线列信息。</p>
+<p>比如p5=[17 17 17 17 17 17 17 18 18 18 18 18 18 19 19 19 19 19 19 19 20 20 21 21……. 22 22 23 2324 24 25<br>25 25 25 25 25 26 26 26]<br>表明第17列有7个点，第18列有6个点依次类推</p>
+<p>2.我们还需要了解这样的一个原理.<br>看图如下：<br><img src="/2015/08/10/关于位图边缘的检测定位/5.png" alt="图像处理"></p>
+<p>3.显然根据上图我们不难将x1和x3附近所以的列保留下来.保存至memlocate向量中.<br>matlab代码如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">p=sparse(LastPerim);%对LastPerim求稀疏矩阵即只保留值为1的元素</span><br><span class="line">  p1=find(p);  %按列索引,即找出稀疏矩阵的按列一维索引</span><br><span class="line">  p2=p1/388  %388为列数,此值为稀疏矩阵中保留位置的列值</span><br><span class="line">  p3=floor(p2)   %对p2进行取整</span><br><span class="line">  p4=p3<span class="string">'   %转置成一维行向量</span></span><br><span class="line"><span class="string">  len=length(p4)-1;</span></span><br><span class="line"><span class="string">  len=len-388; %减去最后一列边缘的388个数据点</span></span><br><span class="line"><span class="string">  calculate=0;</span></span><br><span class="line"><span class="string">  k=1;</span></span><br><span class="line"><span class="string">  p5=p4(:,1:len);</span></span><br><span class="line"><span class="string">%%找出p4中连续五个以上相等的数存储在memlocate中</span></span><br><span class="line"><span class="string">  for i=1:1:len-4</span></span><br><span class="line"><span class="string">      if (p5(i)==p5(i+1)&amp;&amp;p5(i+1)==p5(i+2)&amp;&amp;p5(i+2)==p5(i+3))</span></span><br><span class="line"><span class="string">          calculate=calculate+1;</span></span><br><span class="line"><span class="string">      else</span></span><br><span class="line"><span class="string">          if(calculate&gt;=3)</span></span><br><span class="line"><span class="string">                  memlocate(k) = p5(i);</span></span><br><span class="line"><span class="string">                  k=k+1;</span></span><br><span class="line"><span class="string">                  calculate=0;  </span></span><br><span class="line"><span class="string">          end</span></span><br><span class="line"><span class="string">      end</span></span><br><span class="line"><span class="string">  end</span></span><br></pre></td></tr></table></figure></p>
+<p>memlocate截图如下:其中x1和x3附近总共只有21列保留了下来<br><img src="/2015/08/10/关于位图边缘的检测定位/6.png" alt="图像处理"></p>
+<p>4.而此时我们只需要在memlocate中进行分类即可.我们在这里用简单相邻列的差来区分x1和x3这两个不同的边缘.如果差值等于1则表明是属于同一类。否则属于不同类。这样便把不同类的列位置得到了,定位也随即完成.</p>
+<p>此部分matlab代码如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">%%对入侵点进行定位</span><br><span class="line">p=1;</span><br><span class="line">j=0;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t=1:1:k-2</span><br><span class="line">    j=j+1;</span><br><span class="line">    <span class="keyword">if</span>((memlocate(t+1)-memlocate(t))&gt;=2)</span><br><span class="line">         fid=fopen(<span class="string">'LocateResult15.txt'</span>,<span class="string">'at+'</span>);</span><br><span class="line">         fprintf(fid,<span class="string">'The %d location is:%d\n'</span>,p,memlocate(t+1-j));</span><br><span class="line">         p=p+1;</span><br><span class="line">         j=0;</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>LocateResult.txt截图如下：<br><img src="/2015/08/10/关于位图边缘的检测定位/7.png" alt="图像处理"></p>
+<p>第一边缘列的位置在17列,第二边缘列的位置在254列.定位成功！</p>
+<h2 id="完结"><a href="#完结" class="headerlink" title="完结"></a>完结</h2>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#过程"><span class="toc-number">2.</span> <span class="toc-text">过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">3.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+

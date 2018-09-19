@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言最近由于项目需要，需要做一些边缘检测相关的工作。于是把最近几天的学习内容做一下整理。 基本原理在图像处理和计算机视觉中，边缘检测被广泛使用。其目的在于标识出数字图像中亮点变化明显的点，进而提取出有用的信息。通常情况下我们可以将数字图像表示为二位数组，而概二位数组中每个元素的值则对应着图像各个像素点的灰度值。而边缘检测的根本原理是通过算法将该数组中各个数据邻域内数值变化大的数据元素进行突出显示，">
+<meta name="keywords" content="图像处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像处理之边缘检测概述">
+<meta property="og:url" content="http://yoursite.com/2015/06/26/图像处理之边缘检测概述/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="前言最近由于项目需要，需要做一些边缘检测相关的工作。于是把最近几天的学习内容做一下整理。 基本原理在图像处理和计算机视觉中，边缘检测被广泛使用。其目的在于标识出数字图像中亮点变化明显的点，进而提取出有用的信息。通常情况下我们可以将数字图像表示为二位数组，而概二位数组中每个元素的值则对应着图像各个像素点的灰度值。而边缘检测的根本原理是通过算法将该数组中各个数据邻域内数值变化大的数据元素进行突出显示，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2015/06/26/图像处理之边缘检测概述/1.png">
+<meta property="og:image" content="http://yoursite.com/2015/06/26/图像处理之边缘检测概述/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/06/26/图像处理之边缘检测概述/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/06/26/图像处理之边缘检测概述/3.jpg">
+<meta property="og:updated_time" content="2018-09-19T15:42:01.967Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图像处理之边缘检测概述">
+<meta name="twitter:description" content="前言最近由于项目需要，需要做一些边缘检测相关的工作。于是把最近几天的学习内容做一下整理。 基本原理在图像处理和计算机视觉中，边缘检测被广泛使用。其目的在于标识出数字图像中亮点变化明显的点，进而提取出有用的信息。通常情况下我们可以将数字图像表示为二位数组，而概二位数组中每个元素的值则对应着图像各个像素点的灰度值。而边缘检测的根本原理是通过算法将该数组中各个数据邻域内数值变化大的数据元素进行突出显示，">
+<meta name="twitter:image" content="http://yoursite.com/2015/06/26/图像处理之边缘检测概述/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>图像处理之边缘检测概述</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/06/30/数字图像处理之位图在计算机中的存储结构/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/06/25/TCP-IP协议详解卷1-第一章概述-读书笔记/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本原理"><span class="toc-number">2.</span> <span class="toc-text">基本原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘检测算法有哪些"><span class="toc-number">3.</span> <span class="toc-text">边缘检测算法有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘检测在图像处理中的一般步骤"><span class="toc-number">4.</span> <span class="toc-text">边缘检测在图像处理中的一般步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#matlab边缘处理示例"><span class="toc-number">5.</span> <span class="toc-text">matlab边缘处理示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">6.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        图像处理之边缘检测概述
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-06-26T14:34:08.000Z" itemprop="datePublished">2015-06-26</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/图像处理/">图像处理</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近由于项目需要，需要做一些边缘检测相关的工作。于是把最近几天的学习内容做一下整理。</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>在图像处理和计算机视觉中，边缘检测被广泛使用。其目的在于标识出数字图像中亮点变化明显的点，进而提取出有用的信息。通常情况下我们可以将数字图像表示为二位数组，而概二位数组中每个元素的值则对应着图像各个像素点的灰度值。而边缘检测的根本原理是通过算法将该数组中各个数据邻域内数值变化大的数据元素进行突出显示，而邻域内变化不大的相邻数据元素数据元素进行屏蔽或降低其灰度显示。</p>
+<p>不难看出其边缘检测的很像即为如何找出一种算法来突出这种邻域内的数值变化率。</p>
+<h2 id="边缘检测算法有哪些"><a href="#边缘检测算法有哪些" class="headerlink" title="边缘检测算法有哪些"></a>边缘检测算法有哪些</h2><p>不难看出，边缘检测算法的核心是突出图像中变化率，无论目标与目标，还是目标与背景之间。这于导数的概念离奇的详尽。而对于离散的数字图像中，我们可以使用与求导类比的差分运算来提取图像边缘。基于此原理应用于二维数组中我们可以求出该二维数组的梯度模矩阵。该梯度模矩阵就能比较清楚的表示出图像矩阵的边缘。当然也可以设定一个阈值，当梯度模矩阵中大于阈值的元素则保留，而低于阈值的元素则设为黑度。</p>
+<p>根据梯度模矩阵的不同求法，边缘检测算法可以分为两大类：一阶导数方式（梯度算子）和二阶导数方式<br>而一阶导数方式中几种常见的边缘算子为：Robert,Sobel,PreWitt,kvisch.</p>
+<p>而二阶导数方式常见的有：laplace算子</p>
+<h2 id="边缘检测在图像处理中的一般步骤"><a href="#边缘检测在图像处理中的一般步骤" class="headerlink" title="边缘检测在图像处理中的一般步骤"></a>边缘检测在图像处理中的一般步骤</h2><p><img src="/2015/06/26/图像处理之边缘检测概述/1.png" alt="图像处理"></p>
+<p>其中第一步为滤波，因为图像中存在噪声所以需要先进行滤波。然而数字图像中的噪声大多和边缘信号一样占据高频段，所以如果滤波过于完全很可能连同边缘一起滤除，使得滤波后的图像变得模糊，无法提取有效的边缘。而第二步为我们通常所说的利用边缘算子对边缘进行增强。这一步的结果便可直接当做边缘检测的结果。然而大多数边缘检测还需要进行第三部，设定阈值，对超过阈值的像素点进行突出，对低于阈值的像素点进行屏蔽。</p>
+<h2 id="matlab边缘处理示例"><a href="#matlab边缘处理示例" class="headerlink" title="matlab边缘处理示例"></a>matlab边缘处理示例</h2><p><img src="/2015/06/26/图像处理之边缘检测概述/1.jpg" alt="图像处理"><br><img src="/2015/06/26/图像处理之边缘检测概述/2.jpg" alt="图像处理"><br>程序结果如下：<br><img src="/2015/06/26/图像处理之边缘检测概述/3.jpg" alt="图像处理"></p>
+<h2 id="完结"><a href="#完结" class="headerlink" title="完结"></a>完结</h2><p>本文对边缘检测做了简单的概述，也是对近两天学习的总结。通过此文相信大家会对边缘检测有了大概的了解，通过最后一个示例程序使读者对各种边缘处理的印象更加直观。</p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本原理"><span class="toc-number">2.</span> <span class="toc-text">基本原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘检测算法有哪些"><span class="toc-number">3.</span> <span class="toc-text">边缘检测算法有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘检测在图像处理中的一般步骤"><span class="toc-number">4.</span> <span class="toc-text">边缘检测在图像处理中的一般步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#matlab边缘处理示例"><span class="toc-number">5.</span> <span class="toc-text">matlab边缘处理示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">6.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
