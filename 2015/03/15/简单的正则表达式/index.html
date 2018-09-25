@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言正则表示简单理解就是通过一种模式字符串去匹配特定规律的字符串 例子这个正则表达式是：”\w+@\w+(\.\w+)+” \w代表任意的数字字母,即[0-9A-Za-z],而\w中的第一个‘\’是为了将第二个‘\’’转义.即我们可以理解为’\w’=‘\w’ 而后面的’+’代表一个或者多个[0-9A-Za-z],而‘@’是代表与一个‘@’字符进行匹配,后面又出现’\w’同意的代表一个或者多个[0-">
+<meta name="keywords" content="正则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单的正则表达式">
+<meta property="og:url" content="http://yoursite.com/2015/03/15/简单的正则表达式/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="前言正则表示简单理解就是通过一种模式字符串去匹配特定规律的字符串 例子这个正则表达式是：”\w+@\w+(\.\w+)+” \w代表任意的数字字母,即[0-9A-Za-z],而\w中的第一个‘\’是为了将第二个‘\’’转义.即我们可以理解为’\w’=‘\w’ 而后面的’+’代表一个或者多个[0-9A-Za-z],而‘@’是代表与一个‘@’字符进行匹配,后面又出现’\w’同意的代表一个或者多个[0-">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-25T15:56:19.955Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简单的正则表达式">
+<meta name="twitter:description" content="前言正则表示简单理解就是通过一种模式字符串去匹配特定规律的字符串 例子这个正则表达式是：”\w+@\w+(\.\w+)+” \w代表任意的数字字母,即[0-9A-Za-z],而\w中的第一个‘\’是为了将第二个‘\’’转义.即我们可以理解为’\w’=‘\w’ 而后面的’+’代表一个或者多个[0-9A-Za-z],而‘@’是代表与一个‘@’字符进行匹配,后面又出现’\w’同意的代表一个或者多个[0-">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>简单的正则表达式</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/03/16/正则表达匹配csdn博文标题/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/03/12/linux下mysql数据库的操作/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子"><span class="toc-number">2.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">4.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        简单的正则表达式
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-03-15T03:29:52.000Z" itemprop="datePublished">2015-03-15</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/正则/">正则</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>正则表示简单理解就是通过一种模式字符串去匹配特定规律的字符串</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>这个正则表达式是：”\w+@\w+(\.\w+)+”</p>
+<p>\w代表任意的数字字母,即[0-9A-Za-z],而\w中的第一个‘\’是为了将第二个‘\’’转义.即我们可以理解为’\w’=‘\w’ 而后面的’+’代表一个或者多个[0-9A-Za-z],而‘@’是代表与一个‘@’字符进行匹配,后面又出现’\w’同意的代表一个或者多个[0-9A-Za-z],而圆括号’()’则代表进行分组,圆括号内代表匹配一个小数点小树点之后又一个或者多个[0-9A-Za-z],而圆括号后面的‘+’号则匹配一个或者多个圆括号内匹配的内容.</p>
+<p>邮箱的标准格式:用户名@邮箱服务器域名。如：<a href="mailto:abc@def.com" target="_blank" rel="noopener">abc@def.com</a></p>
+<p>举例‘@’之前的\w可以代表1507026255,也可以代表m21344,又或者4ns4等等。即匹配邮箱的用户名，而‘@’之后的’\w’则是匹配邮箱的服务器域名,可以是QQ邮箱,可以是163邮箱.而又的邮箱如新浪邮箱的服务器域名可能是<a href="mailto:adc@sina.com.cn" target="_blank" rel="noopener">adc@sina.com.cn</a> 后面还需要匹配一个小数点和一些字母因此出现了’(\.\w)+’此表达式代表匹配多个.com类似的服务器域名.</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://www.cnblogs.com/chengmo/archive/2010/10/10/1847287.html" title="linux shell 正则表达式(BREs,EREs,PREs)差异比较" target="_blank" rel="noopener">http://www.cnblogs.com/chengmo/archive/2010/10/10/1847287.html</a></p>
+<p><a href="http://www.360doc.com/content/11/0304/11/5912935_98007617.shtml" title="正则表达式练习" target="_blank" rel="noopener">http://www.360doc.com/content/11/0304/11/5912935_98007617.shtml </a></p>
+<p><a href="http://www.jb51.net/article/42989.htm" title=" Linux 正则表达式详解" target="_blank" rel="noopener">http://www.jb51.net/article/42989.htm</a></p>
+<p><a href="http://www.sjhf.net/blog/user1/sjhf/archives/2006/2006413152324.htm" title="正则表达式教程，详细描述正则表达式的用法" target="_blank" rel="noopener">http://www.sjhf.net/blog/user1/sjhf/archives/2006/2006413152324.htm</a></p>
+<p><a href="http://blog.csdn.net/wklken/article/details/6429526" title="Linux笔记——正则表达式入门及应用" target="_blank" rel="noopener">http://blog.csdn.net/wklken/article/details/6429526</a></p>
+<p><a href="http://www.tuicool.com/articles/fyARRf" title="轻松学习之Linux教程六 正则表达式详解" target="_blank" rel="noopener">http://www.tuicool.com/articles/fyARRf  </a></p>
+<p><a href="http://blog.csdn.net/zhangyu_kenshin/article/details/23377517" title="Linux-正则表达式-反选练习" target="_blank" rel="noopener">http://blog.csdn.net/zhangyu_kenshin/article/details/23377517</a></p>
+<h2 id="完结"><a href="#完结" class="headerlink" title="完结"></a>完结</h2>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子"><span class="toc-number">2.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完结"><span class="toc-number">4.</span> <span class="toc-text">完结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="正则匹配,我以我的博客页面的博客标题为例:http://blog.csdn.net/u013018721页面截图如下:我们再看看页面源代码,找到每个标题的html代码位置: 我们可以看出博客的标题都隐藏在一个span标签中,这个span标签的class都为”link_titile”,真正的标题在标签之间好了,现在我们可以用正则匹配一下.当然你可以用任何一种支持正则表达式语言进行编程正则匹配。这里我">
+<meta name="keywords" content="正则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正则表达匹配csdn博文标题">
+<meta property="og:url" content="http://yoursite.com/2015/03/16/正则表达匹配csdn博文标题/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="正则匹配,我以我的博客页面的博客标题为例:http://blog.csdn.net/u013018721页面截图如下:我们再看看页面源代码,找到每个标题的html代码位置: 我们可以看出博客的标题都隐藏在一个span标签中,这个span标签的class都为”link_titile”,真正的标题在标签之间好了,现在我们可以用正则匹配一下.当然你可以用任何一种支持正则表达式语言进行编程正则匹配。这里我">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2015/03/16/正则表达匹配csdn博文标题/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/03/16/正则表达匹配csdn博文标题/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/03/16/正则表达匹配csdn博文标题/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/03/16/正则表达匹配csdn博文标题/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2015/03/16/正则表达匹配csdn博文标题/5.jpg">
+<meta property="og:updated_time" content="2018-09-25T16:02:39.130Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="正则表达匹配csdn博文标题">
+<meta name="twitter:description" content="正则匹配,我以我的博客页面的博客标题为例:http://blog.csdn.net/u013018721页面截图如下:我们再看看页面源代码,找到每个标题的html代码位置: 我们可以看出博客的标题都隐藏在一个span标签中,这个span标签的class都为”link_titile”,真正的标题在标签之间好了,现在我们可以用正则匹配一下.当然你可以用任何一种支持正则表达式语言进行编程正则匹配。这里我">
+<meta name="twitter:image" content="http://yoursite.com/2015/03/16/正则表达匹配csdn博文标题/1.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>正则表达匹配csdn博文标题</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/04/17/STL源码剖析读书笔记之vector/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/03/15/简单的正则表达式/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        正则表达匹配csdn博文标题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-03-16T01:22:52.000Z" itemprop="datePublished">2015-03-16</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/正则/">正则</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>正则匹配,我以我的博客页面的博客标题为例:<a href="http://blog.csdn.net/u013018721" title="http://blog.csdn.net/u013018721" target="_blank" rel="noopener">http://blog.csdn.net/u013018721</a>页面截图如下:<br><img src="/2015/03/16/正则表达匹配csdn博文标题/1.jpg" alt="正则"><br>我们再看看页面源代码,找到每个标题的html代码位置:<br><img src="/2015/03/16/正则表达匹配csdn博文标题/2.jpg" alt="正则"></p>
+<p>我们可以看出博客的标题都隐藏在一个span标签中,这个span标签的class都为”link_titile”,真正的标题在<a>标签之间</a>好了,现在我们可以用正则匹配一下.当然你可以用任何一种支持正则表达式语言进<br>行编程正则匹配。这里我为了方便，用了一个正则测试小工具:<br><img src="/2015/03/16/正则表达匹配csdn博文标题/3.jpg" alt="正则"></p>
+<p>整个工具截图如下:第一部分Regular Expression为正则表达式  test text是你需要进行匹配的文本,test results为匹配结果</p>
+<p>现在我们来写正则:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;span class=<span class="string">"link_title"</span>&gt;&lt;a href=<span class="string">"/u013018721/article/details/\d+"</span>&gt;(.+?)&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>匹配结果如下:<br><img src="/2015/03/16/正则表达匹配csdn博文标题/4.jpg" alt="正则"></p>
+<p>当然还有一个问题,有的人会问这里的正则可以这样写吗?<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;span class=<span class="string">"link_title"</span>&gt;&lt;a href=<span class="string">"/u013018721/article/details/\d+"</span>&gt;(.+)&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>好我们来试试,匹配结果如下:<br><img src="/2015/03/16/正则表达匹配csdn博文标题/5.jpg" alt="正则"></p>
+<p>发现只匹配了一个标题,怎么回事呢？</p>
+<table><tr><td bgcolor="red">这里就涉及到贪婪匹配和非贪婪匹配的问题。简单的说:正则匹配默认是贪婪匹配,加上?进行非贪婪匹配尽可能的不重复匹配上一个字符</td></tr></table>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+

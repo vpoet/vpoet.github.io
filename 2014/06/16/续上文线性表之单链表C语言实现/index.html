@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言本文绪上文线性表之顺序表(C实现) 本文将继续使用单链表实现线性表的另外一种存储结构.这种使用链表实现的存储结构在内存中是不连续的. 示例123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869">
+<meta name="keywords" content="数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="续上文线性表之单链表C语言实现">
+<meta property="og:url" content="http://yoursite.com/2014/06/16/续上文线性表之单链表C语言实现/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="前言本文绪上文线性表之顺序表(C实现) 本文将继续使用单链表实现线性表的另外一种存储结构.这种使用链表实现的存储结构在内存中是不连续的. 示例123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2014/06/16/续上文线性表之单链表C语言实现/1.png">
+<meta property="og:updated_time" content="2018-09-25T16:16:01.867Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="续上文线性表之单链表C语言实现">
+<meta name="twitter:description" content="前言本文绪上文线性表之顺序表(C实现) 本文将继续使用单链表实现线性表的另外一种存储结构.这种使用链表实现的存储结构在内存中是不连续的. 示例123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869">
+<meta name="twitter:image" content="http://yoursite.com/2014/06/16/续上文线性表之单链表C语言实现/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>续上文线性表之单链表C语言实现</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/06/18/线性表之双向链表C语言实现/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/06/15/线性表之顺序表C语言实现/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例"><span class="toc-number">2.</span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结束"><span class="toc-number">3.</span> <span class="toc-text">结束</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        续上文线性表之单链表C语言实现
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2014-06-16T04:35:54.000Z" itemprop="datePublished">2014-06-16</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/数据结构/">数据结构</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文绪上文线性表之顺序表(C实现)</p>
+<p>本文将继续使用单链表实现线性表的另外一种存储结构.这种使用链表实现的存储结构在内存中是不连续的.</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include&lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line">typedef struct node</span><br><span class="line">&#123;</span><br><span class="line">    int data;</span><br><span class="line">    struct node *next;</span><br><span class="line">&#125;Node;</span><br><span class="line"></span><br><span class="line">//链表的初始化</span><br><span class="line">Node* InitList(int number)</span><br><span class="line">&#123;</span><br><span class="line">    int i;</span><br><span class="line">    Node *pHead=(Node *)malloc(sizeof(Node));</span><br><span class="line">    Node *TempHead=pHead;</span><br><span class="line">    Node *Head=pHead;</span><br><span class="line">    int data;</span><br><span class="line">    <span class="keyword">for</span>(i=0;i&lt;number;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pHead=(Node *)malloc(sizeof(Node));</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Please input the %dst node data:\n"</span>,i+1);</span><br><span class="line">        scanf(<span class="string">"%d"</span>,&amp;data);</span><br><span class="line">        pHead-&gt;data=data;</span><br><span class="line">        pHead-&gt;next=NULL;</span><br><span class="line">        TempHead-&gt;next=pHead;</span><br><span class="line">        TempHead=TempHead-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">return</span> Head;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//显示链表</span><br><span class="line">void ShowList(Node *Head)</span><br><span class="line">&#123;</span><br><span class="line">    Node *TempNode=Head;</span><br><span class="line">    Head=Head-&gt;next;</span><br><span class="line">    <span class="keyword">while</span>(Head-&gt;next!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d "</span>,Head-&gt;data);</span><br><span class="line">        Head=Head-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>,Head-&gt;data);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//输出链表某个值的位置</span><br><span class="line">int ListLocation(Node *Head,int data,int number)</span><br><span class="line">&#123;</span><br><span class="line">    Node *TempNode=Head;</span><br><span class="line">    int location=1;</span><br><span class="line">    TempNode=TempNode-&gt;next;</span><br><span class="line">    <span class="keyword">while</span>(TempNode-&gt;next!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(TempNode-&gt;data==data)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">return</span> location;</span><br><span class="line">            &#125;</span><br><span class="line">            location++;</span><br><span class="line">            TempNode=TempNode-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(location&gt;=number)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Not found!"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//输出链表某个位置的值</span><br><span class="line">int ListData(Node *Head,int location,int number)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(location&gt;number)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Not found!"</span>);</span><br><span class="line"></span><br><span class="line">    Node *TempNode=Head;</span><br><span class="line">    TempNode=TempNode-&gt;next;</span><br><span class="line">    int i;</span><br><span class="line">    <span class="keyword">for</span>(i=1;i&lt;=number;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(location==i)</span><br><span class="line">            <span class="built_in">return</span> TempNode-&gt;data;</span><br><span class="line">        TempNode=TempNode-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//头入法插入元素</span><br><span class="line">void HeadInsertData(Node *Head,int data)</span><br><span class="line">&#123;</span><br><span class="line">    Node *InsertNode=(Node *)malloc(sizeof(Node));</span><br><span class="line">    InsertNode-&gt;data=data;</span><br><span class="line">    InsertNode-&gt;next=Head-&gt;next;</span><br><span class="line">    Head-&gt;next=InsertNode;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//尾入插入除元素</span><br><span class="line">void TailInsertData(Node *Head,int data)</span><br><span class="line">&#123;</span><br><span class="line">    Node *TempNode=Head;</span><br><span class="line">    Node *InsertNode=(Node *)malloc(sizeof(Node));</span><br><span class="line">    InsertNode-&gt;data=data;</span><br><span class="line">    <span class="keyword">while</span>(TempNode-&gt;next!=NULL)</span><br><span class="line">        TempNode=TempNode-&gt;next;</span><br><span class="line"></span><br><span class="line">    TempNode-&gt;next=InsertNode;</span><br><span class="line">    InsertNode-&gt;next=NULL;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//删除头结点</span><br><span class="line">void HeadDeleteData(Node *Head)</span><br><span class="line">&#123;</span><br><span class="line">    Head-&gt;next=Head-&gt;next-&gt;next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//删除尾结点</span><br><span class="line">void TailDeleteData(Node *Head)</span><br><span class="line">&#123;</span><br><span class="line">    Node *TempNode=Head;</span><br><span class="line">    <span class="keyword">while</span>(Head-&gt;next-&gt;next!=NULL)</span><br><span class="line">        Head=Head-&gt;next;</span><br><span class="line"></span><br><span class="line">    Head-&gt;next=NULL;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    Node *Head;</span><br><span class="line">    int number;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Please input the node number:\n"</span>);</span><br><span class="line">    scanf(<span class="string">"%d"</span>,&amp;number);</span><br><span class="line">    Head=InitList(number);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"The initital list is:\n"</span>);</span><br><span class="line">    ShowList(Head);</span><br><span class="line"></span><br><span class="line">    int flag;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"**********************Your Choice********************\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"****************1-输出链表某个值的位置***************\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"****************2-输出链表某个位置的值***************\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"****************3-头入法插入元素*********************\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"****************4-尾入法插入元素*********************\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"****************5-删除头结点*************************\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"****************6-删除尾结点*************************\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"****************0-退出*******************************\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Please input flag:\n"</span>);</span><br><span class="line">    scanf(<span class="string">"%d"</span>,&amp;flag);</span><br><span class="line"></span><br><span class="line">    switch(flag)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> 1:</span><br><span class="line">        &#123;</span><br><span class="line">            int data;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"Please input the data you want locate:\n"</span>);</span><br><span class="line">            scanf(<span class="string">"%d"</span>,&amp;data);</span><br><span class="line">            int location;</span><br><span class="line">            location=ListLocation(Head,data,number);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"The data's location is: %d"</span>,location);</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> 2:</span><br><span class="line">        &#123;</span><br><span class="line">            int location;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"Please input the location you want  data:\n"</span>);</span><br><span class="line">            scanf(<span class="string">"%d"</span>,&amp;location);</span><br><span class="line">            int data;</span><br><span class="line">            data=ListData(Head,location,number);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"The location's data is: %d\n"</span>,data);</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> 3:</span><br><span class="line">        &#123;</span><br><span class="line">            int data;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"Please input the data you want insert in head:\n"</span>);</span><br><span class="line">            scanf(<span class="string">"%d"</span>,&amp;data);</span><br><span class="line">            HeadInsertData(Head,data);</span><br><span class="line">            ShowList(Head);</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> 4:</span><br><span class="line">        &#123;</span><br><span class="line">            int data;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"Please input the data you want insert in tail:\n"</span>);</span><br><span class="line">            scanf(<span class="string">"%d"</span>,&amp;data);</span><br><span class="line">            TailInsertData(Head,data);</span><br><span class="line">            ShowList(Head);</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> 5:</span><br><span class="line">        &#123;</span><br><span class="line">            HeadDeleteData(Head);</span><br><span class="line">            ShowList(Head);</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> 6:</span><br><span class="line">        &#123;</span><br><span class="line">            TailDeleteData(Head);</span><br><span class="line">            ShowList(Head);</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> 7:</span><br><span class="line">        &#123;</span><br><span class="line">           <span class="built_in">printf</span>(<span class="string">"You choose to exit.\n"</span>);</span><br><span class="line">           <span class="built_in">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果图：<br><img src="/2014/06/16/续上文线性表之单链表C语言实现/1.png" alt="数据结构"></p>
+<h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h2>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例"><span class="toc-number">2.</span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结束"><span class="toc-number">3.</span> <span class="toc-text">结束</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
