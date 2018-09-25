@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="关于进程的内存的分配参考博文:https://blog.csdn.net/hongchangfirst/article/details/6917829前言这里主要说说堆区和栈区的区别: 1.堆区是程序里动态分配的内容,堆区的内存容量大,使用灵活，分别后要自行回收容易产生内存碎片。2.栈区主要是存储函数的局部变量，然后程序结束后操作系统自行回收但是栈区容量比较小。  示例我们看下面这段测试代码:12">
+<meta name="keywords" content="C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="程序的堆区和栈区">
+<meta property="og:url" content="http://yoursite.com/2014/10/14/程序的堆区和栈区/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="关于进程的内存的分配参考博文:https://blog.csdn.net/hongchangfirst/article/details/6917829前言这里主要说说堆区和栈区的区别: 1.堆区是程序里动态分配的内容,堆区的内存容量大,使用灵活，分别后要自行回收容易产生内存碎片。2.栈区主要是存储函数的局部变量，然后程序结束后操作系统自行回收但是栈区容量比较小。  示例我们看下面这段测试代码:12">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2014/10/14/程序的堆区和栈区/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/10/14/程序的堆区和栈区/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/10/14/程序的堆区和栈区/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/10/14/程序的堆区和栈区/4.jpg">
+<meta property="og:updated_time" content="2018-09-25T15:23:35.555Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="程序的堆区和栈区">
+<meta name="twitter:description" content="关于进程的内存的分配参考博文:https://blog.csdn.net/hongchangfirst/article/details/6917829前言这里主要说说堆区和栈区的区别: 1.堆区是程序里动态分配的内容,堆区的内存容量大,使用灵活，分别后要自行回收容易产生内存碎片。2.栈区主要是存储函数的局部变量，然后程序结束后操作系统自行回收但是栈区容量比较小。  示例我们看下面这段测试代码:12">
+<meta name="twitter:image" content="http://yoursite.com/2014/10/14/程序的堆区和栈区/1.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>程序的堆区和栈区</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/10/14/Cplusplus静态成员函数不能调用非静态成员变量/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/09/14/关于-ifndef-define-end的说明/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#关于进程的内存的分配参考博文-https-blog-csdn-net-hongchangfirst-article-details-6917829"><span class="toc-number">1.</span> <span class="toc-text">关于进程的内存的分配参考博文:https://blog.csdn.net/hongchangfirst/article/details/6917829</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number"></span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例"><span class="toc-number"></span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解析"><span class="toc-number"></span> <span class="toc-text">解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结束"><span class="toc-number"></span> <span class="toc-text">结束</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        程序的堆区和栈区
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2014-10-14T09:27:42.000Z" itemprop="datePublished">2014-10-14</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/C/">C++</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h5 id="关于进程的内存的分配参考博文-https-blog-csdn-net-hongchangfirst-article-details-6917829"><a href="#关于进程的内存的分配参考博文-https-blog-csdn-net-hongchangfirst-article-details-6917829" class="headerlink" title="关于进程的内存的分配参考博文:https://blog.csdn.net/hongchangfirst/article/details/6917829"></a>关于进程的内存的分配参考博文:<a href="https://blog.csdn.net/hongchangfirst/article/details/6917829" title="进程的内存分配情况" target="_blank" rel="noopener">https://blog.csdn.net/hongchangfirst/article/details/6917829</a></h5><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这里主要说说堆区和栈区的区别:</p>
+<table><tr><td bgcolor="red">1.堆区是程序里动态分配的内容,堆区的内存容量大,使用灵活，分别后要自行回收容易产生内存碎片。<br><br>2.栈区主要是存储函数的局部变量，然后程序结束后操作系统自行回收但是栈区容量比较小。</td></tr></table>
+
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>我们看下面这段测试代码:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int *DArea;</span><br><span class="line">    int SArea[1024*252]=&#123;1,2,3,4,5&#125;;</span><br><span class="line">    DArea=new int[5];</span><br><span class="line">    <span class="keyword">for</span>(int i=1;i&lt;=5;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        DArea[i-1]=i*10;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /************************************************************************/</span><br><span class="line">    /* DArea动态分配5个int大小的内存,分配在程序的堆区</span><br><span class="line">       SArea为局部变量,在栈区分配5个int大小的内存*/</span><br><span class="line">    /************************************************************************/</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><p>我把断点打到return 0;这一句查看一下内存:<br><img src="/2014/10/14/程序的堆区和栈区/1.jpg" alt="C++"></p>
+<p>可以看出来前面四个地址均为0x0012ffxx，,而后面两个地址为:0x00252fxx说明前面的四个元素是分配在一起的而后面两个元素是分配在一起的那么我们可以猜测前面四个元素是存在于程序栈区,而后面两个元素是存在于程序堆区。</p>
+<p>&amp;SArea[1]-&amp;SArea[0]=sizeof(int)，&amp;DArea[1]-&amp;DArea[0]=sizeof(int)说明无论是分配在堆区的数据还是分配在栈区的元素都是连续存放的。</p>
+<p>另外&amp;SArea=&amp;SArea[0]说明在栈区中数组名和数组第一个元素是等价的。然而&amp;DArea!=&amp;DArea[0] </p>
+<p>我们再看看<br><img src="/2014/10/14/程序的堆区和栈区/2.jpg" alt="C++"><br>DArea=&amp;DArea[0]，&amp;DArea!=&amp;DArea[0]说明动态分配的数组在栈中保存了一个指针,该指针指向堆区的第一个元素的地址。正是这一点是与在栈中分配数据最大的区别。</p>
+<p>我们再梳理下:</p>
+<table><tr><td bgcolor="green">对于在栈区中分配的数组,其数组名和数组中的一个元素占用同一块地址。对于在堆区中分配的数据，其数据名是在栈中分配的一个指针变量，该变量保存的一个堆区的一个元素地址，该元素正是动态分配在堆的第一个元素地址。<br><br>然而这里就揭示的内存泄露的原理，当我们再堆区中分配的内存如果没有手工释放，程序结束后会把栈中的内存回收释放，该栈中保存了一个指向堆区元素的指针。然而这个指针一旦释放了后，就再也没有元素指向堆区的那块元素，然而堆区中的那块元素又没有释放，这自然而然的造成了内存泄露。</td></tr></table>
+
+
+<p>此外还有一点需要说明:</p>
+<p>既然栈区大小有限,那到底是多大呢，VC里默认分配1M的栈空间。当超过这个栈空间大小的时候会提示stack overflow。</p>
+<p>那么我们来分配一个很大的数据(1024*1536&gt;1M)来测试一下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int *DArea;</span><br><span class="line">    int SArea[1024*1536]=&#123;1,2,3,4,5&#125;;</span><br><span class="line">    DArea=new int[5];</span><br><span class="line">    <span class="keyword">for</span>(int i=1;i&lt;=5;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        DArea[i-1]=i*10;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>提示:<br><img src="/2014/10/14/程序的堆区和栈区/3.jpg" alt="C++"><br>那怎么改栈空间的大小呢,<br>在VC里面:工程-设置-链接-输出-将堆栈输出中保留一项改为0x1000000(10M)我们再试试看:<br><img src="/2014/10/14/程序的堆区和栈区/4.jpg" alt="C++"><br>这下没有提示栈溢出错误了</p>
+<h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h2>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#关于进程的内存的分配参考博文-https-blog-csdn-net-hongchangfirst-article-details-6917829"><span class="toc-number">1.</span> <span class="toc-text">关于进程的内存的分配参考博文:https://blog.csdn.net/hongchangfirst/article/details/6917829</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number"></span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例"><span class="toc-number"></span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解析"><span class="toc-number"></span> <span class="toc-text">解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结束"><span class="toc-number"></span> <span class="toc-text">结束</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+

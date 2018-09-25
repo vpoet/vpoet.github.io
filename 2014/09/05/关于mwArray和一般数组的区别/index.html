@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="可以用下面的代码详细理解mwArray和一般数组之间的区别code:123456789101112131415161718192021mwArray a(3, 2,  mxDOUBLE_CLASS);  double *aData;  aData = new double[6];  int iii;  for( iii=0; iii&amp;lt;6; ++iii)  &amp;#123;          aD">
+<meta name="keywords" content="C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于mwArray和一般数组的区别">
+<meta property="og:url" content="http://yoursite.com/2014/09/05/关于mwArray和一般数组的区别/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="可以用下面的代码详细理解mwArray和一般数组之间的区别code:123456789101112131415161718192021mwArray a(3, 2,  mxDOUBLE_CLASS);  double *aData;  aData = new double[6];  int iii;  for( iii=0; iii&amp;lt;6; ++iii)  &amp;#123;          aD">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-25T14:39:36.427Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于mwArray和一般数组的区别">
+<meta name="twitter:description" content="可以用下面的代码详细理解mwArray和一般数组之间的区别code:123456789101112131415161718192021mwArray a(3, 2,  mxDOUBLE_CLASS);  double *aData;  aData = new double[6];  int iii;  for( iii=0; iii&amp;lt;6; ++iii)  &amp;#123;          aD">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>关于mwArray和一般数组的区别</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/09/09/从txt中读入数据到数组中-fscanf/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/09/02/C读txt到二维数组/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        关于mwArray和一般数组的区别
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2014-09-05T13:29:09.000Z" itemprop="datePublished">2014-09-05</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/C/">C++</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>可以用下面的代码详细理解mwArray和一般数组之间的区别<br>code:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">mwArray a(3, 2,  mxDOUBLE_CLASS);  </span><br><span class="line">double *aData;  </span><br><span class="line">aData = new double[6];  </span><br><span class="line">int iii;  </span><br><span class="line"><span class="keyword">for</span>( iii=0; iii&lt;6; ++iii)  </span><br><span class="line">&#123;  </span><br><span class="line">        aData[iii] = iii+1;  </span><br><span class="line">&#125;  </span><br><span class="line">// <span class="built_in">print</span> output  </span><br><span class="line">std::cout &lt;&lt; <span class="string">"a = "</span> &lt;&lt; std::endl;  </span><br><span class="line">std::cout &lt;&lt; aData[0] &lt;&lt; <span class="string">",\t"</span> &lt;&lt; aData[1] &lt;&lt; std::endl;  </span><br><span class="line">std::cout &lt;&lt; aData[2] &lt;&lt; <span class="string">",\t"</span> &lt;&lt; aData[3] &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; aData[4] &lt;&lt; <span class="string">",\t"</span> &lt;&lt; aData[5] &lt;&lt; std::endl;  </span><br><span class="line"></span><br><span class="line">a.SetData(aData, 6);  </span><br><span class="line">std::cout &lt;&lt; <span class="string">"a(1,1)="</span>&lt;&lt;a(1,1)&lt;&lt;std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">"a(1,2)="</span>&lt;&lt;a(1,2)&lt;&lt;std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">"a(2,1)="</span>&lt;&lt;a(2,1)&lt;&lt;std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">"a(2,2)="</span>&lt;&lt;a(2,2)&lt;&lt;std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">"a(3,1)="</span>&lt;&lt;a(3,1)&lt;&lt;std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">"a(3,2)="</span>&lt;&lt;a(3,2)&lt;&lt;std::endl;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果如图：【一位数组到多维数组的组织方式是列优先的】<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a =</span><br><span class="line">1,      2</span><br><span class="line">3,      4</span><br><span class="line">5,      6</span><br><span class="line">a(1,1)=1</span><br><span class="line">a(1,2)=4</span><br><span class="line">a(2,1)=2</span><br><span class="line">a(2,2)=5</span><br><span class="line">a(3,1)=3</span><br><span class="line">a(3,2)=6</span><br></pre></td></tr></table></figure></p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+

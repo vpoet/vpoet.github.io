@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="vector概述vector是一种序列式容器,我的理解是vector就像数组。但是数组有一个很大的问题就是当我们分配一个一定大小的数组的时候,起初也许我们不会觉得数组容量太小不合需求，但是随着数据量的增加，数组尺寸大小不再满足需求,此时我们需要手动的去扩展其大小。然而vector就帮我们完全实现了一个可自适应增长的数组功能。那么这样看来vector其实也就是一种可自适应增长的动态数组的类的实现。">
+<meta name="keywords" content="C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL源码剖析读书笔记之vector">
+<meta property="og:url" content="http://yoursite.com/2015/04/17/STL源码剖析读书笔记之vector/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="vector概述vector是一种序列式容器,我的理解是vector就像数组。但是数组有一个很大的问题就是当我们分配一个一定大小的数组的时候,起初也许我们不会觉得数组容量太小不合需求，但是随着数据量的增加，数组尺寸大小不再满足需求,此时我们需要手动的去扩展其大小。然而vector就帮我们完全实现了一个可自适应增长的数组功能。那么这样看来vector其实也就是一种可自适应增长的动态数组的类的实现。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-25T14:59:20.635Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="STL源码剖析读书笔记之vector">
+<meta name="twitter:description" content="vector概述vector是一种序列式容器,我的理解是vector就像数组。但是数组有一个很大的问题就是当我们分配一个一定大小的数组的时候,起初也许我们不会觉得数组容量太小不合需求，但是随着数据量的增加，数组尺寸大小不再满足需求,此时我们需要手动的去扩展其大小。然而vector就帮我们完全实现了一个可自适应增长的数组功能。那么这样看来vector其实也就是一种可自适应增长的动态数组的类的实现。">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>STL源码剖析读书笔记之vector</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/04/18/memcpy和memmove的比较/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/03/12/linux下mysql数据库的操作/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vector概述"><span class="toc-number">1.</span> <span class="toc-text">vector概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于vector的定义"><span class="toc-number">2.</span> <span class="toc-text">关于vector的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vector内存分配原理"><span class="toc-number">3.</span> <span class="toc-text">vector内存分配原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意点"><span class="toc-number">4.</span> <span class="toc-text">注意点</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        STL源码剖析读书笔记之vector
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-04-17T05:48:09.000Z" itemprop="datePublished">2015-04-17</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/C/">C++</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="vector概述"><a href="#vector概述" class="headerlink" title="vector概述"></a>vector概述</h2><p>vector是一种序列式容器,我的理解是vector就像数组。但是数组有一个很大的问题就是当我们分配一个一定大小的数组的时候,起初也许我们不会觉得数组容量太小不合需求，但是随着数据量的增加，数组尺寸大小不再满足需求,此时我们需要手动的去扩展其大小。然而vector就帮我们完全实现了一个可自适应增长的数组功能。那么这样看来vector其实也就是一种可自适应增长的动态数组的类的实现。</p>
+<h2 id="关于vector的定义"><a href="#关于vector的定义" class="headerlink" title="关于vector的定义"></a>关于vector的定义</h2><p>其实用过vector的人都知道 vector的定义大都像这个样子:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;int&gt; v1;</span><br><span class="line">vector&lt;sting&gt; v2;</span><br></pre></td></tr></table></figure></p>
+<table><tr><td bgcolor="green">很显然vector是一种与类型无关的类模板，支持各种类型的vector，这也很好的体现了C++的泛型思想，正是这种类型无关性，使得STL在各种平台上广为使用。</td></tr></table>
+
+<p>这里我只是贴出STL源码剖析书中一小部分vector定义<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class T,class Alloc=alloc&gt;</span><br><span class="line">class vector</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">   typedef   T     value_type;</span><br><span class="line">   typedef valuetype* pointer;</span><br><span class="line">   typedef valuetype* iterator;  </span><br><span class="line">   typedef valuetype&amp; reference;</span><br><span class="line">   typedef size_t    size_type;</span><br><span class="line">......</span><br><span class="line">protected:</span><br><span class="line">     iterator start;</span><br><span class="line">     iterator finish;</span><br><span class="line">     iterator end_of_storage;</span><br><span class="line">....</span><br><span class="line">pubic:</span><br><span class="line">     iterator begin&#123;<span class="built_in">return</span> start;&#125;</span><br><span class="line">     iterator <span class="function"><span class="title">end</span></span>()&#123;<span class="built_in">return</span> finish;&#125;</span><br><span class="line">     size_type size() const &#123;<span class="built_in">return</span> size_type(end()-begin());&#125;</span><br><span class="line">     size_type capacity() const &#123;<span class="built_in">return</span> size_type(end_of_storage-begin());&#125;</span><br><span class="line">     reference front &#123;<span class="built_in">return</span> *begin()&#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面有几个关键点:</p>
+<p>vector维护了三个迭代器:start,finish和end_of_storage由typedef valuetype* iterator可知迭代器说白了就是指针。那么vector维护的三个迭代器(指针)的意思是什么呢。start指向vector的第一个元素。finish指向vector已经使用的空间的最后一个元素的下一个元素。end_of_storage指向vector总共可用空间的最后一个元素的下一个元素所以操作vector与操作指针完全类似，只是在vector中把这些操作封装成相应的方法直接供读者使用罢了。</p>
+<h2 id="vector内存分配原理"><a href="#vector内存分配原理" class="headerlink" title="vector内存分配原理"></a>vector内存分配原理</h2><p>不是之前我们说vector是一种自增长的动态数组吗？那么其子增长的原理是什么。</p>
+<p>其实很简单:</p>
+<p>1.当vector为空时,我们插入一个元素到vector中,这时候vector将内存容量变为1,然后将新的元素插入其中</p>
+<p>2.当vector容量为1的时候,此时vector中刚好有一个元素,若要插入一个2,这时候将重新new一个内存为2的新空间，将之前内存中的1拷贝到新内存并释放1旧内存，同时将新的元素2插入其中</p>
+<p>3.重复步骤2，只要就内存容量已满就重新分配新内存，新内存的大小是旧内存的二倍，再讲旧内存中的数据赋值到新内存,同时释放新内存。同时插入新元素在新的内存空间。</p>
+<p>我们可以用下面的程序验证这一点:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line"><span class="comment">#include &lt;vector&gt;</span></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main(int argc, char* argv[])</span><br><span class="line">&#123;</span><br><span class="line">    std::vector&lt;int&gt; v1;</span><br><span class="line">    </span><br><span class="line">    cout&lt;&lt;<span class="string">"v1.size()="</span>&lt;&lt;v1.size()&lt;&lt;<span class="string">"   "</span>&lt;&lt;<span class="string">"v1.capacity()="</span>&lt;&lt;v1.capacity()&lt;&lt;endl;</span><br><span class="line">    v1.push_back(1);</span><br><span class="line">    cout&lt;&lt;<span class="string">"v1.size()="</span>&lt;&lt;v1.size()&lt;&lt;<span class="string">"   "</span>&lt;&lt;<span class="string">"v1.capacity()="</span>&lt;&lt;v1.capacity()&lt;&lt;endl;</span><br><span class="line">    v1.push_back(2);</span><br><span class="line">    cout&lt;&lt;<span class="string">"v1.size()="</span>&lt;&lt;v1.size()&lt;&lt;<span class="string">"   "</span>&lt;&lt;<span class="string">"v1.capacity()="</span>&lt;&lt;v1.capacity()&lt;&lt;endl;</span><br><span class="line">    v1.push_back(3);</span><br><span class="line">    cout&lt;&lt;<span class="string">"v1.size()="</span>&lt;&lt;v1.size()&lt;&lt;<span class="string">"   "</span>&lt;&lt;<span class="string">"v1.capacity()="</span>&lt;&lt;v1.capacity()&lt;&lt;endl;</span><br><span class="line">    v1.push_back(4);</span><br><span class="line">    cout&lt;&lt;<span class="string">"v1.size()="</span>&lt;&lt;v1.size()&lt;&lt;<span class="string">"   "</span>&lt;&lt;<span class="string">"v1.capacity()="</span>&lt;&lt;v1.capacity()&lt;&lt;endl;</span><br><span class="line">    v1.push_back(5);</span><br><span class="line">    cout&lt;&lt;<span class="string">"v1.size()="</span>&lt;&lt;v1.size()&lt;&lt;<span class="string">"   "</span>&lt;&lt;<span class="string">"v1.capacity()="</span>&lt;&lt;v1.capacity()&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><table><tr><td bgcolor="red">1.为什么vector容量满了之后要重新开辟新的内存,因为vector要求连续的内存空间<br><br>2.如果重新开启新内存太频繁应该会造成较大的程序开销,怎么办.我们可以一开给reserve一个大的capacity.<br><br>3.重新开启新内存是否会造成原来的迭代器失效 ?是的,所以我们最好知道何时会开辟新的capacity，进而防止这种迭代器失效。<br><br>4.对于vector删除或者插入造成的迭代器失效已经在之前的博文中有介绍。</td></tr></table>
+
+
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vector概述"><span class="toc-number">1.</span> <span class="toc-text">vector概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于vector的定义"><span class="toc-number">2.</span> <span class="toc-text">关于vector的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vector内存分配原理"><span class="toc-number">3.</span> <span class="toc-text">vector内存分配原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意点"><span class="toc-number">4.</span> <span class="toc-text">注意点</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
