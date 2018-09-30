@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="题目题目:输入一颗二叉树和一个整数,打印出二叉树中借点值得和为输入整数的所有路径。从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。 二叉树结点定义:123456struct BinaryTreeNode&amp;#123;   int m_nValue;   BinaryTreeNode* m_pLeft;   BinaryTreeNode* m_pRight;&amp;#125; 分析12345">
+<meta name="keywords" content="剑指offer(C&#x2F;C++)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="剑指offer-面试题25.二叉树中和为某一值的路径">
+<meta property="og:url" content="http://yoursite.com/2015/09/05/面试题25-二叉树中和为某一值的路径/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="题目题目:输入一颗二叉树和一个整数,打印出二叉树中借点值得和为输入整数的所有路径。从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。 二叉树结点定义:123456struct BinaryTreeNode&amp;#123;   int m_nValue;   BinaryTreeNode* m_pLeft;   BinaryTreeNode* m_pRight;&amp;#125; 分析12345">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2015/09/05/面试题25-二叉树中和为某一值的路径/1.png">
+<meta property="og:updated_time" content="2018-09-30T14:11:27.580Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="剑指offer-面试题25.二叉树中和为某一值的路径">
+<meta name="twitter:description" content="题目题目:输入一颗二叉树和一个整数,打印出二叉树中借点值得和为输入整数的所有路径。从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。 二叉树结点定义:123456struct BinaryTreeNode&amp;#123;   int m_nValue;   BinaryTreeNode* m_pLeft;   BinaryTreeNode* m_pRight;&amp;#125; 分析12345">
+<meta name="twitter:image" content="http://yoursite.com/2015/09/05/面试题25-二叉树中和为某一值的路径/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>剑指offer-面试题25.二叉树中和为某一值的路径</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/09/07/剑指offer-面试题26-复杂链表的复制/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/09/04/面试题24-二叉搜索树的后序遍历序列/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#题目"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number">2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现"><span class="toc-number">3.</span> <span class="toc-text">实现</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        剑指offer-面试题25.二叉树中和为某一值的路径
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-09-05T02:28:32.000Z" itemprop="datePublished">2015-09-05</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/剑指offer-C-C/">剑指offer(C/C++)</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>题目:输入一颗二叉树和一个整数,打印出二叉树中借点值得和为输入整数的所有路径。从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。</p>
+<p>二叉树结点定义:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct BinaryTreeNode</span><br><span class="line">&#123;</span><br><span class="line">   int m_nValue;</span><br><span class="line">   BinaryTreeNode* m_pLeft;</span><br><span class="line">   BinaryTreeNode* m_pRight;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">　       8</span><br><span class="line">   /  \</span><br><span class="line">  6   10</span><br><span class="line">    　/ \  / \</span><br><span class="line">5  7 9  11</span><br></pre></td></tr></table></figure>
+<p>为例，当我们想要找到值为21的路径的时候。</p>
+<p>步骤如下:<br>1.收到从根元素开始寻找路径，则在二叉树的三种遍历顺序中只有前序遍历满足条件。<br>2.接下来向左子树遍历到元素6，此时8+6=14仍然不等于21<br>3.继续向左子树遍历到元素5，此时8+6+5=19<br>4.发现此时元素5已经是叶子节点了，则退回到元素6，向右节点遍历到<br>元素7，此时8+6+7=21满足条件输出8，6,7<br>5.继续用同样的方式递归该二叉树的右子树即可。</p>
+<p>这里存储路径的数据结构可以是stack可以是vector，用vector的原因是方便输出</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line"><span class="comment">#include &lt;string&gt;</span></span><br><span class="line"><span class="comment">#include &lt;vector&gt;</span></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">struct BinaryTreeNode</span><br><span class="line">&#123;</span><br><span class="line">     int m_nValue;</span><br><span class="line">     BinaryTreeNode* m_pLeft;</span><br><span class="line">     BinaryTreeNode* m_pRight;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void CreateTree(BinaryTreeNode** Root)</span><br><span class="line">&#123;</span><br><span class="line">    int data;</span><br><span class="line">    cin&gt;&gt;data;</span><br><span class="line">    <span class="keyword">if</span>(data==0)</span><br><span class="line">    &#123;</span><br><span class="line">        *Root=NULL;</span><br><span class="line">        <span class="built_in">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        *Root=(BinaryTreeNode*)malloc(sizeof(BinaryTreeNode));</span><br><span class="line">        (*Root)-&gt;m_nValue=data;</span><br><span class="line">        CreateTree(&amp;((*Root)-&gt;m_pLeft));    </span><br><span class="line">        CreateTree(&amp;((*Root)-&gt;m_pRight));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">void PreOrder(BinaryTreeNode* Root)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(Root==NULL)</span><br><span class="line">        <span class="built_in">return</span>;</span><br><span class="line"></span><br><span class="line">    cout&lt;&lt;Root-&gt;m_nValue&lt;&lt;endl;</span><br><span class="line">    PreOrder(Root-&gt;m_pLeft);</span><br><span class="line">    PreOrder(Root-&gt;m_pRight);    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">void FindPath(BinaryTreeNode* root,vector&lt;int&gt;&amp; VecPath,int Sum,int NowSum)</span><br><span class="line">&#123;</span><br><span class="line">    NowSum=NowSum+root-&gt;m_nValue;</span><br><span class="line">    VecPath.push_back(root-&gt;m_nValue);</span><br><span class="line"></span><br><span class="line">    bool yezi=root-&gt;m_pLeft==NULL&amp;&amp;root-&gt;m_pRight==NULL;</span><br><span class="line">    <span class="keyword">if</span>(NowSum==Sum&amp;&amp;yezi)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">"Find Path of Number "</span>&lt;&lt;Sum&lt;&lt;<span class="string">":    "</span>;</span><br><span class="line">        <span class="keyword">for</span>(vector&lt;int&gt;::iterator iter=VecPath.begin();iter!=VecPath.end();iter++)</span><br><span class="line">        &#123;</span><br><span class="line">            cout&lt;&lt;*iter&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        cout&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(root-&gt;m_pLeft!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        FindPath(root-&gt;m_pLeft,VecPath,Sum,NowSum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(root-&gt;m_pRight!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        FindPath(root-&gt;m_pRight,VecPath,Sum,NowSum);</span><br><span class="line">    &#125;</span><br><span class="line">    VecPath.pop_back();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">void FindPathOfNumber(BinaryTreeNode* root,int Sum)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(root==NULL)</span><br><span class="line">        <span class="built_in">return</span>;</span><br><span class="line"></span><br><span class="line">    vector&lt;int&gt; VecPath;</span><br><span class="line">    int NowSum=0;</span><br><span class="line">    FindPath(root,VecPath,Sum,NowSum);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    BinaryTreeNode* root;</span><br><span class="line">    cout&lt;&lt;<span class="string">"Please input the tree node data(0-exit):\n"</span>;</span><br><span class="line">    CreateTree(&amp;root);</span><br><span class="line">    cout&lt;&lt;<span class="string">"The PreOrder of Binary Tree:\n"</span>;</span><br><span class="line">    PreOrder(root);</span><br><span class="line">    cout&lt;&lt;endl;</span><br><span class="line">    int num;</span><br><span class="line">    cout&lt;&lt;<span class="string">"Please input the path sum you want to find: "</span>;</span><br><span class="line">    cin&gt;&gt;num;</span><br><span class="line">    FindPathOfNumber(root,num);</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行截图:<br><img src="/2015/09/05/面试题25-二叉树中和为某一值的路径/1.png" alt="剑指offer(C/C++)"></p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#题目"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number">2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现"><span class="toc-number">3.</span> <span class="toc-text">实现</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+

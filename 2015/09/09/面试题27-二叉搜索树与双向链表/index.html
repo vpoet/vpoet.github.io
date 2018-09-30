@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="题目题目:输入一颗二叉搜索树，将该二叉搜索树转换为一个排序的双向链表。要求不能创建任何新的结点，只能调整树种结点指针的指向。比如输入下图的二叉搜索树，则输出转换后的双向排序链表12345      10    /    \  6      14 /  \    /  \4   8   12  16 转换后的双向排序链表为:14&amp;lt;---&amp;gt;6&amp;lt;---&amp;gt;8&amp;lt;---&amp;gt;1">
+<meta name="keywords" content="剑指offer(C&#x2F;C++)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="剑指offer-面试题27.二叉搜索树与双向链表">
+<meta property="og:url" content="http://yoursite.com/2015/09/09/面试题27-二叉搜索树与双向链表/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="题目题目:输入一颗二叉搜索树，将该二叉搜索树转换为一个排序的双向链表。要求不能创建任何新的结点，只能调整树种结点指针的指向。比如输入下图的二叉搜索树，则输出转换后的双向排序链表12345      10    /    \  6      14 /  \    /  \4   8   12  16 转换后的双向排序链表为:14&amp;lt;---&amp;gt;6&amp;lt;---&amp;gt;8&amp;lt;---&amp;gt;1">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2015/09/09/面试题27-二叉搜索树与双向链表/1.png">
+<meta property="og:updated_time" content="2018-09-30T14:20:13.884Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="剑指offer-面试题27.二叉搜索树与双向链表">
+<meta name="twitter:description" content="题目题目:输入一颗二叉搜索树，将该二叉搜索树转换为一个排序的双向链表。要求不能创建任何新的结点，只能调整树种结点指针的指向。比如输入下图的二叉搜索树，则输出转换后的双向排序链表12345      10    /    \  6      14 /  \    /  \4   8   12  16 转换后的双向排序链表为:14&amp;lt;---&amp;gt;6&amp;lt;---&amp;gt;8&amp;lt;---&amp;gt;1">
+<meta name="twitter:image" content="http://yoursite.com/2015/09/09/面试题27-二叉搜索树与双向链表/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>剑指offer-面试题27.二叉搜索树与双向链表</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/09/10/面试题28-字符串的排列/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/09/07/剑指offer-面试题26-复杂链表的复制/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#题目"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number">2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现"><span class="toc-number">3.</span> <span class="toc-text">实现</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        剑指offer-面试题27.二叉搜索树与双向链表
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-09-09T06:48:32.000Z" itemprop="datePublished">2015-09-09</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/剑指offer-C-C/">剑指offer(C/C++)</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>题目:输入一颗二叉搜索树，将该二叉搜索树转换为一个排序的双向链表。要求不能创建任何新的结点，只能调整树种结点指针的指向。比如输入下图的二叉搜索树，则输出转换后的双向排序链表<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">      10</span><br><span class="line">    /    \</span><br><span class="line">  6      14</span><br><span class="line"> /  \    /  \</span><br><span class="line">4   8   12  16</span><br></pre></td></tr></table></figure></p>
+<p>转换后的双向排序链表为:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">4&lt;---&gt;6&lt;---&gt;8&lt;---&gt;10&lt;---&gt;12&lt;---&gt;14&lt;---&gt;16</span><br></pre></td></tr></table></figure></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>首先 要明白二叉搜索树是根结点大于左子结点，小于右子结点 然而要让转换后的双向链表基本有序,则应该中序遍历该二叉树遍历的时候将树看成三部分:值为10的根结点，根结点值为6的左子树，根结点值为14的右子树。根据排序链表的定义。值为10的结点将和左子树的最大的结点链接起来，同时该结点还要和右子树最小的结点链接起来。然而对于左子树和右子树，递归上述步骤即可。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">struct BinaryTreeNode</span><br><span class="line">&#123;</span><br><span class="line">    int        m_nValue;</span><br><span class="line">    BinaryTreeNode* m_pLeft;</span><br><span class="line">    BinaryTreeNode* m_pRight;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void ConvertNode(BinaryTreeNode* pNode,BinaryTreeNode** pLastNodeInlist)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(pNode==NULL)</span><br><span class="line">        <span class="built_in">return</span>;</span><br><span class="line"></span><br><span class="line">    BinaryTreeNode *pCurrent = pNode;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(pCurrent-&gt;m_pLeft!=NULL)</span><br><span class="line">        ConvertNode(pCurrent-&gt;m_pLeft,pLastNodeInlist);</span><br><span class="line"></span><br><span class="line">    pCurrent-&gt;m_pLeft=*pLastNodeInlist;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(*pLastNodeInlist!=NULL)</span><br><span class="line">        (*pLastNodeInlist)-&gt;m_pRight=pCurrent;</span><br><span class="line"></span><br><span class="line">    *pLastNodeInlist=pCurrent;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(pCurrent-&gt;m_pRight!=NULL)</span><br><span class="line">        ConvertNode(pCurrent-&gt;m_pRight,pLastNodeInlist);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BinaryTreeNode* Convert(BinaryTreeNode* pRootOfTree)</span><br><span class="line">&#123;</span><br><span class="line">    BinaryTreeNode *pLastNodeInList = NULL;</span><br><span class="line">    ConvertNode(pRootOfTree,&amp;pLastNodeInList);</span><br><span class="line"></span><br><span class="line">    BinaryTreeNode *pHeadOfList = pLastNodeInList;</span><br><span class="line">    <span class="keyword">while</span>(pHeadOfList != NULL&amp;&amp;pHeadOfList-&gt;m_pLeft!=NULL)</span><br><span class="line">        pHeadOfList = pHeadOfList-&gt;m_pLeft;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">return</span> pHeadOfList;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void CreateTree(BinaryTreeNode** Root)</span><br><span class="line">&#123;</span><br><span class="line">     int data;</span><br><span class="line">     cin&gt;&gt;data;</span><br><span class="line">     <span class="keyword">if</span>(data==0)</span><br><span class="line">     &#123;</span><br><span class="line">        *Root=NULL;</span><br><span class="line">         <span class="built_in">return</span> ;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">else</span></span><br><span class="line">     &#123;</span><br><span class="line">         *Root=(BinaryTreeNode*)malloc(sizeof(BinaryTreeNode));</span><br><span class="line">         (*Root)-&gt;m_nValue=data;</span><br><span class="line">         CreateTree(&amp;((*Root)-&gt;m_pLeft));    </span><br><span class="line">         CreateTree(&amp;((*Root)-&gt;m_pRight));</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void PrintTreeInOrder(BinaryTreeNode* Root)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(Root==NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;Root-&gt;m_nValue&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    PrintTreeInOrder(Root-&gt;m_pLeft);</span><br><span class="line">    PrintTreeInOrder(Root-&gt;m_pRight);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void PrintTheLinkList(BinaryTreeNode *Head)</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">"从前往后变量该双向链表: "</span>;</span><br><span class="line">    <span class="keyword">while</span>(Head-&gt;m_pRight!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;Head-&gt;m_nValue&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">        Head=Head-&gt;m_pRight;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;Head-&gt;m_nValue&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    cout&lt;&lt;endl;</span><br><span class="line">    BinaryTreeNode *Last=Head;</span><br><span class="line">    cout&lt;&lt;<span class="string">"从后往前变量该双向链表: "</span>;</span><br><span class="line">    <span class="keyword">while</span>(Last!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;Last-&gt;m_nValue&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">        Last=Last-&gt;m_pLeft;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    BinaryTreeNode* Root;</span><br><span class="line">    CreateTree(&amp;Root);</span><br><span class="line">    cout&lt;&lt;<span class="string">"The InOrderOfTree: "</span>;</span><br><span class="line">    PrintTreeInOrder(Root);</span><br><span class="line">    cout&lt;&lt;endl;</span><br><span class="line">    BinaryTreeNode* HeadOfLinkList;</span><br><span class="line">    HeadOfLinkList=Convert(Root);</span><br><span class="line">    cout&lt;&lt;endl;</span><br><span class="line">    PrintTheLinkList(HeadOfLinkList);</span><br><span class="line">    cout&lt;&lt;endl;</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行截图:<br><img src="/2015/09/09/面试题27-二叉搜索树与双向链表/1.png" alt="剑指offer(C/C++)"></p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#题目"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number">2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现"><span class="toc-number">3.</span> <span class="toc-text">实现</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+

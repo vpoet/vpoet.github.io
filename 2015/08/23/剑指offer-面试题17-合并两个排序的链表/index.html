@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="题目题目:输入两个递增的排序的链表,合并这两个链表并使新链表中的节点仍然是按照递增排序的。例如链表1链表2合并为链表3.123List1:1-&amp;gt;3-&amp;gt;5-&amp;gt;7List2:2-&amp;gt;4-&amp;gt;6-&amp;gt;8List3:1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;6-&amp;gt;7-&amp;gt;8 链表结点定义如下:12345struct ListNode&amp;#123;">
+<meta name="keywords" content="剑指offer(C&#x2F;C++)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="剑指offer-面试题17.合并两个排序的链表">
+<meta property="og:url" content="http://yoursite.com/2015/08/23/剑指offer-面试题17-合并两个排序的链表/index.html">
+<meta property="og:site_name" content="vpoet&#39;s blog">
+<meta property="og:description" content="题目题目:输入两个递增的排序的链表,合并这两个链表并使新链表中的节点仍然是按照递增排序的。例如链表1链表2合并为链表3.123List1:1-&amp;gt;3-&amp;gt;5-&amp;gt;7List2:2-&amp;gt;4-&amp;gt;6-&amp;gt;8List3:1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;6-&amp;gt;7-&amp;gt;8 链表结点定义如下:12345struct ListNode&amp;#123;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2015/08/23/剑指offer-面试题17-合并两个排序的链表/1.jpg">
+<meta property="og:updated_time" content="2018-09-30T13:45:36.078Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="剑指offer-面试题17.合并两个排序的链表">
+<meta name="twitter:description" content="题目题目:输入两个递增的排序的链表,合并这两个链表并使新链表中的节点仍然是按照递增排序的。例如链表1链表2合并为链表3.123List1:1-&amp;gt;3-&amp;gt;5-&amp;gt;7List2:2-&amp;gt;4-&amp;gt;6-&amp;gt;8List3:1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;6-&amp;gt;7-&amp;gt;8 链表结点定义如下:12345struct ListNode&amp;#123;">
+<meta name="twitter:image" content="http://yoursite.com/2015/08/23/剑指offer-面试题17-合并两个排序的链表/1.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_vpoet.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>剑指offer-面试题17.合并两个排序的链表</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/08/25/剑指offer-面试题18-树的子结构/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/08/21/剑指offer-面试题16-反转链表/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#题目"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number">2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#答案"><span class="toc-number">3.</span> <span class="toc-text">答案</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        剑指offer-面试题17.合并两个排序的链表
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">vpoet's blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-08-23T14:26:32.000Z" itemprop="datePublished">2015-08-23</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/剑指offer-C-C/">剑指offer(C/C++)</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>题目:输入两个递增的排序的链表,合并这两个链表并使新链表中的节点仍然是按照递增排序的。例如链表1链表2合并为链表3.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List1:1-&gt;3-&gt;5-&gt;7</span><br><span class="line">List2:2-&gt;4-&gt;6-&gt;8</span><br><span class="line">List3:1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6-&gt;7-&gt;8</span><br></pre></td></tr></table></figure></p>
+<p>链表结点定义如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct ListNode</span><br><span class="line">&#123;</span><br><span class="line">    int     m_nValue;</span><br><span class="line">    ListNode* m_pNext;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>其实我们可以简单梳理下流程如下:<br>1.两个指针分别指向List1和List2的头结点。设为ptr1和ptr2<br>2.比较ptr1和ptr2结点的值,ptr1&lt;ptr2则ptr1则是合并后的链表头结点<br>3.ptr1向后移动一个结点此时再比较 ptr1&gt;ptr2则将ptr2的节点插入到头结点之后<br>4.当ptr1或者ptr2到达末尾时 比如ptr1到达List1结尾后 若此时ptr2还未到List2结尾将ptr2插入到新排序的链表后面.</p>
+<h2 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">struct ListNode</span><br><span class="line">&#123;</span><br><span class="line">    int data;</span><br><span class="line">    struct ListNode *next;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ListNode* CreateList()</span><br><span class="line">&#123;</span><br><span class="line">    struct ListNode* Head,*p;</span><br><span class="line">    Head=(struct ListNode*)malloc(sizeof(ListNode));</span><br><span class="line">    Head-&gt;data=0;</span><br><span class="line">    Head-&gt;next=NULL;</span><br><span class="line">    p=Head;</span><br><span class="line">    </span><br><span class="line">    cout&lt;&lt;<span class="string">"Create List....(0-exit!)"</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        int Data;</span><br><span class="line">        cin&gt;&gt;Data;</span><br><span class="line">        <span class="keyword">if</span>(Data!=0)</span><br><span class="line">        &#123;</span><br><span class="line">            struct ListNode* NewNode;</span><br><span class="line">            NewNode=(struct ListNode*)malloc(sizeof(ListNode));</span><br><span class="line">            NewNode-&gt;data=Data;</span><br><span class="line">            NewNode-&gt;next=NULL;</span><br><span class="line">            p-&gt;next=NewNode;</span><br><span class="line">            p=p-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">return</span> Head-&gt;next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void PrintList(struct ListNode* Head)</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">"The List is: "</span>;</span><br><span class="line">    </span><br><span class="line">    struct ListNode *p;</span><br><span class="line">    p=Head;</span><br><span class="line">    <span class="keyword">while</span>(p!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;p-&gt;data&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">        p=p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct ListNode* Merge(ListNode* pHead1,ListNode* pHead2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(pHead1==NULL&amp;&amp;pHead2==NULL)</span><br><span class="line">        <span class="built_in">return</span> NULL;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(pHead1==NULL&amp;&amp;pHead2!=NULL)</span><br><span class="line">        <span class="built_in">return</span> pHead2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(pHead1!=NULL&amp;&amp;pHead2==NULL)</span><br><span class="line">        <span class="built_in">return</span> pHead1;</span><br><span class="line"></span><br><span class="line">    struct ListNode *ptr1,*ptr2,*MergeList,*newhead;;</span><br><span class="line">    </span><br><span class="line">    ptr1=pHead1;</span><br><span class="line">    ptr2=pHead2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(ptr1-&gt;data&gt;ptr2-&gt;data)</span><br><span class="line">    &#123;</span><br><span class="line">        MergeList=ptr2;</span><br><span class="line">        ptr2=ptr2-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        MergeList=ptr1;</span><br><span class="line">        ptr1=ptr1-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    newhead=MergeList;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(ptr1!=NULL&amp;&amp;ptr2!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(ptr1-&gt;data&gt;ptr2-&gt;data)</span><br><span class="line">        &#123;</span><br><span class="line">            MergeList-&gt;next=ptr2;</span><br><span class="line">            ptr2=ptr2-&gt;next;</span><br><span class="line">            MergeList=MergeList-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(ptr1-&gt;data&lt;ptr2-&gt;data)</span><br><span class="line">        &#123;</span><br><span class="line">            MergeList-&gt;next=ptr1;</span><br><span class="line">            ptr1=ptr1-&gt;next;</span><br><span class="line">            MergeList=MergeList-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(ptr1!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span>(ptr1!=NULL)</span><br><span class="line">        &#123;</span><br><span class="line">            MergeList-&gt;next=ptr1;</span><br><span class="line">            ptr1=ptr1-&gt;next;</span><br><span class="line">            MergeList=MergeList-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        MergeList-&gt;next=NULL;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(ptr2!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span>(ptr2!=NULL)</span><br><span class="line">        &#123;</span><br><span class="line">            MergeList-&gt;next=ptr2;</span><br><span class="line">            ptr2=ptr2-&gt;next;</span><br><span class="line">            MergeList=MergeList-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        MergeList-&gt;next=NULL;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="built_in">return</span> newhead;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    ListNode *List1,*List2,*MergeList;</span><br><span class="line">    List1=CreateList();</span><br><span class="line">    PrintList(List1);</span><br><span class="line">    List2=CreateList();</span><br><span class="line">    PrintList(List2);</span><br><span class="line">    MergeList=Merge(List1,List2);</span><br><span class="line">    PrintList(MergeList);</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行截图:<br><img src="/2015/08/23/剑指offer-面试题17-合并两个排序的链表/1.jpg" alt="剑指offer(C/C++)"></p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#题目"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number">2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#答案"><span class="toc-number">3.</span> <span class="toc-text">答案</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 vpoet
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-86660611-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2e6da3c375c8a87f5b664cea6d4cb29c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
